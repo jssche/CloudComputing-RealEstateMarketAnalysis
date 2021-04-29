@@ -66,8 +66,8 @@ def main():
                          'sold_both_auction_private_treaty_totalprice']
     }
 
-    # geoData = getSA3Geo()
-    # upload(geoData, 'SA3Geo')
+    geoData = getSA3Geo()
+    upload(geoData, 'SA3Geo')
     uploadData('houseMarket', col_dict['houseMarket'], dir_dict['houseMarket'])
     
 
