@@ -1,4 +1,3 @@
-# import couchdb
 import json
 import requests
 import geopandas as gpd
@@ -10,19 +9,20 @@ def getSA3Geo():
     districts = districts.to_json()
     return districts 
 
-def uploadcdb():
-    couch = couchdb.Server('http://admin:admin@172.17.0.2:5984')
-    db = couch['aurin']
-    db['SA3Geo'] = getSA3Geo()
-
-def main():
-    headers = {'content-type': 'application/json'}
-    payload = getSA3Geo()
-    r = requests.post('http://admin:admin@172.17.0.2:5984/aurin', data=payload, headers=headers)
-    print(r.text)
+def getHouseData():
     
 
+def upload(payload):
+    headers = {'content-type': 'application/json'}
+    r = requests.post('http://admin:admin@172.17.0.2:5984/aurin', data=payload, headers=headers)
+    print(r.text)
 
+def main():
+    geoData = getSA3Geo()
+    houseData = getHouseData()
+    # upload(geoData)
+
+    
 
 if __name__ == "__main__":
     main()
