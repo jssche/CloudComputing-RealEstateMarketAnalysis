@@ -1,6 +1,6 @@
 ################## Common vars ##################
 # Prerequisites variables.
-instance Flavor: uom.general.1c4g
+instance_flavor: uom.general.1c4g
 availability_zone: melbourne-qh2-uom
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb # Ubuntu 20
 instance_network: qh2-uom-internal
