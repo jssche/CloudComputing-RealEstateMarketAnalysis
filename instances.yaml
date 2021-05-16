@@ -7,5 +7,5 @@
     - role: images
     - role: volumes
     - role: security-groups
+    # - role: keypair
     - role: instances
-    - role: keypair

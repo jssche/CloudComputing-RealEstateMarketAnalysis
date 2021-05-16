@@ -36,14 +36,20 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
+- name: Create inventory.ini
+  become: yes
+  template:
+    src: inventory.j2
+    dest: inventory/inventory.ini
+
 - name: Initialise inventory.ini
   copy:
-    content: "[All:children]\nmaster\nslaves\n\n[master:children]\ninstance_1\n\n[slvaes:children]\n"
-    dest: /inventory/inventory.ini
+    content: "\n\n[master:children]\ninstance_1\n\n[slaves:children]\n\n"
+    dest: inventory/inventory.ini
 
 - name: Fill in slaves using ip information
   lineinfile:
-    dest: /inventory/inventory.ini
+    dest: inventory/inventory.ini
     line: '{{ item.name }}'
     insertafter: '\[slvaes:children\]'
   loop: '{{ ip_information }}'
@@ -51,6 +57,6 @@
 
 - name: Add instances into inventory.ini
   lineinfile:
-    dest: /inventory/inventory.ini
+    dest: inventory/inventory.ini
     line: "[{{ item.name }}]\n{{ item.ip }}\n\n"
   loop: '{{ ip_information }}'

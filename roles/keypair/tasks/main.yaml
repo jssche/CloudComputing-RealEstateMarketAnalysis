@@ -1,6 +1,6 @@
 ---
 - name: Key pair
   copy:
-    src: "/grp-33.pem"
-    dest: ~/.ssh/grp-33
-    mode: '644'
+    src: "{{ instance_key_name }}.pem"
+    dest: ~/.ssh/{{ instance_key_name }}
+    mode: '600'
