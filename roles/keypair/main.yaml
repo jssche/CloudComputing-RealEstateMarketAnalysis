@@ -1,0 +1,6 @@
+---
+- name: Key pair
+  copy:
+    src: "/grp-33.pem"
+    dest: ~/.ssh/grp-33
+    mode: '644'

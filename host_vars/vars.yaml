@@ -1,0 +1,66 @@
+---
+################## Common vars ##################
+# Prerequisites variables.
+instance Flavor: uom.general.2c8g
+availability_zone: melbourne-qh2-uom
+instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb # Ubuntu 20
+instance_network: qh2-uom-internal
+instance_key_name: grp-33
+proxy: http://wwwproxy.unimelb.edu.au:8000/
+noproxy: localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.u nimelb.edu.au,.cloud.unimelb.edu.au
+
+################## Volume ##################
+# For each instance, define the volume size.
+volumes:
+  - vol_name: volume1
+    vol_size: 50
+  - vol_name: volume2
+    vol_size: 50
+  - vol_name: volume3
+    vol_size: 50
+  - vol_name: volume4
+    vol_size: 50
+
+################## Security group ##################
+# For each instance, define the TCP rule.
+security_groups:
+  - name: instance1-security-group
+    description: "security group for instance1"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance2-security-group
+    description: "security group for instance2"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance3-security-group
+    description: "security group for instance3"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance4-security-group
+    description: "security group for instance4"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+
+
+################## Instance ##################
+instances:
+  - name: instance_1
+    security_groups: instance1-security-group
+    volumes: ['volume1']
+  - name: instance_2
+    security_groups: instance2-security-group
+    volumes: ['volume2']
+  - name: instance_3
+    security_groups: instance3-security-group
+    volumes: ['volume3']
+  - name: instance_4
+    security_groups: instance4-security-group
+    volumes: ['volume4']

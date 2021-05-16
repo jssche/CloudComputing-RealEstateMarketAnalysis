@@ -1,0 +1,56 @@
+---
+# Create an instance on NeCTAR
+- name: Create an instance
+  os_server:
+    name: '{{ item.name }}'
+    image: '{{ instance_image }}'
+    key_name: '{{ instance_key_name }}'
+    flavor: '{{ instance_flavor }}'
+    availability_zone: '{{ availability_zone }}'
+    security_groups: '{{ item.security_groups }}'
+    volumes: '{{ item.volumes }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ instances }}'
+  register: os_instance
+
+- debug:
+    msg: "Instance {{ item.openstack.name }} has been created. IP address is {{ item.openstack.public_v4 }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Wait for connection
+  wait_for:
+    host: "{{ item.openstack.public_v4 }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Store ip information
+  set_fact: 
+    ip_information: "{{ ip_information|default([]) + [ {'name': item.openstack.name, 'ip': item.openstack.public_v4} ] }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Initialise inventory.ini
+  copy:
+    content: "[All:children]\nmaster\nslaves\n\n[master:children]\ninstance_1\n\n[slvaes:children]\n"
+    dest: /inventory/inventory.ini
+
+- name: Fill in slaves using ip information
+  lineinfile:
+    dest: /inventory/inventory.ini
+    line: '{{ item.name }}'
+    insertafter: '\[slvaes:children\]'
+  loop: '{{ ip_information }}'
+  when: item.name != "instance_1"
+
+- name: Add instances into inventory.ini
+  lineinfile:
+    dest: /inventory/inventory.ini
+    line: "[{{ item.name }}]\n{{ item.ip }}\n\n"
+  loop: '{{ ip_information }}'

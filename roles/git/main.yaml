@@ -1,0 +1,8 @@
+---
+
+- name: clone source code from git
+  git:
+    repo: ssh://git@github.com/jssche/CloudComputing-RealEstateMarketAnalysis.git
+    key_file: /home/ubuntu/.ssh/GitHub
+    dest: '{{ remote_working_directory }}'
+# git clone through ssh
