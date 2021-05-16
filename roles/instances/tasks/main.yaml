@@ -43,8 +43,8 @@
     dest: inventory/inventory.ini
 
 - name: Initialise inventory.ini
-  copy:
-    content: "\n\n[master:children]\ninstance_1\n\n[slaves:children]\n\n"
+  lineinfile:
+    line: "\n[master:children]\ninstance_1\n\n[slaves:children]\n"
     dest: inventory/inventory.ini
 
 - name: Fill in slaves using ip information
@@ -58,5 +58,5 @@
 - name: Add instances into inventory.ini
   lineinfile:
     dest: inventory/inventory.ini
-    line: "[{{ item.name }}]\n{{ item.ip }}\n\n"
+    line: "\n[{{ item.name }}]\n{{ item.ip }}"
   loop: '{{ ip_information }}'
