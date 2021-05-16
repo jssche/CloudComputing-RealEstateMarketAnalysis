@@ -28,7 +28,7 @@ export OS_USERNAME="zhenxie.dong@student.unimelb.edu.au"
 # With Keystone you pass the keystone password.
 echo "Please enter your OpenStack Password for project $OS_PROJECT_NAME as user $OS_USERNAME: "
 read -sr OS_PASSWORD_INPUT
-export OS_PASSWORD="N2UyMTlkOTU4MzhlZWEx"
+export OS_PASSWORD="Yjc3YmE5YTA3Yjk3Y2Iy"
 # If your configuration has multiple regions, we set that information here.
 # OS_REGION_NAME is optional and only valid in certain environments.
 export OS_REGION_NAME="Melbourne"
