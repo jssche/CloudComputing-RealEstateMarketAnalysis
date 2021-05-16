@@ -1,6 +1,6 @@
 ---
-- debug:
-    msg: "{{ ansible_distribution }}"
+# - debug:
+#     msg: "{{ ansible_distribution }}"
 
 
 ################## Install dependencies on the host ##################
