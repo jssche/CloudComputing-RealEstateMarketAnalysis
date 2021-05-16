@@ -1,4 +1,3 @@
----
 ################## Common vars ##################
 # Prerequisites variables.
 instance Flavor: uom.general.1c4g
