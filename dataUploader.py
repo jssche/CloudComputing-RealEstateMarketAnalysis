@@ -3,6 +3,12 @@ import json
 import requests
 import geopandas as gpd
 
+def create_db(name):
+    headers = {'content-type': 'application/json'}
+    url = 'http://admin:admin@172.26.134.87:5984/' + name
+    r = requests.put(url)
+    print(r.text)
+
 def getSA3Geo():
     districts = gpd.read_file(r'./AURIN_data/Geometry/ed02f7e0-8037-42e5-a3da-34f1795fd8c5.shp')
     districts = districts.iloc[:,-3:]
@@ -12,7 +18,7 @@ def getSA3Geo():
 
 def upload(payload, doc_id):
     headers = {'content-type': 'application/json'}
-    url = 'http://admin:admin@172.17.0.2:5984/aurin/'+doc_id
+    url = 'http://admin:admin@172.26.134.87:5984/aurin/'+doc_id
     r = requests.put(url, data=payload, headers=headers)
     print(r.text)
 
@@ -65,9 +71,9 @@ def main():
                          'sold_both_auction_private_treaty_standarddeviationprice',
                          'sold_both_auction_private_treaty_totalprice']
     }
-
-    geoData = getSA3Geo()
-    upload(geoData, 'SA3Geo')
+    # create_db('aurin')
+    # geoData = getSA3Geo()
+    # upload(geoData, 'SA3Geo')
     uploadData('houseMarket', col_dict['houseMarket'], dir_dict['houseMarket'])
     
 
