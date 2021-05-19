@@ -13,12 +13,20 @@ noproxy: localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org
 volumes:
   - vol_name: volume1
     vol_size: 50
+    device: /dev/vdb
+    mountpoint: /couchdb
   - vol_name: volume2
     vol_size: 50
+    device: /dev/vdb
+    mountpoint: /couchdb
   # - vol_name: volume3
   #   vol_size: 50
+  #   device: /dev/vdb
+  #   mountpoint: /couchdb
   # - vol_name: volume4
   #   vol_size: 50
+  #   device: /dev/vdb
+  #   mountpoint: /couchdb
 
 ################## Security group ##################
 # For each instance, define the TCP rule.
@@ -63,3 +71,12 @@ instances:
   # - name: instance_4
   #   security_groups: instance4-security-group
   #   volumes: ['volume4']
+
+
+################## Setup ##################
+# CouchDB
+couch_user: admin
+couch_password: admin
+couch_version: ibmcom/couchdb:3.0.0
+couch_cookie: a192aeb9904e6590849337933b000c99
+couch_data: /couchdb
