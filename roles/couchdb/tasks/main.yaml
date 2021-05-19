@@ -7,10 +7,10 @@
       - "5984:5984"
       - "5986:5986"
       - "4369:4369"
-      - "9100-9200:9100:9200"
+      - "9100-9200:9100-9200"
     mounts:
       - source: "{{ couch_data }}"
-      - target: /opt/couchdb/data
+        target: /opt/couchdb/data
     env:
       COUCHDB_USER: "{{ couch_user }}"
       COUCHDB_PASSWORD: "{{ couch_password }}"
@@ -25,24 +25,41 @@
   set_fact:
     master_instance: "{{ groups['instance_1'][0] }}"
 
+- name: wait
+  pause:
+    seconds: 6
+
+
+#- name: try access
+#  become: yes
+#  shell: "curl http://{{ couch_user }}:{{ couch_password }}@localhost:5984/"
+#  warn: false
+
+- name: try access master cluster setup
+  become: yes
+  shell: "curl http://{{ couch_user }}:{{ couch_password }}@localhost:5984/_cluster_setup"
+  when: ansible_host == master_instance
+
 - name: enable cluster 
   become: yes
   # command: 
   uri:
     url: http://{{ couch_user }}:{{ couch_password }}@{{ master_instance }}:5984/_cluster_setup
+    status_code: 201
     method: POST
     headers: 
       Content-Type: "application/json"
     url_username: "{{ couch_user }}"
     url_password: "{{ couch_password }}"
     force_basic_auth: yes
+    return_content: yes
     body_format: json
     body: "{\"action\": \"enable_cluster\", \"bind_address\":\"0.0.0.0\",\
          \"username\": \"{{ couch_user }}\", \"password\":\"{{ couch_password }}\", \"port\": \"5984\",\
          \"remote_node\": \"{{ ansible_host }}\", \"node_count\": \"{{ groups['All'] | length }}\",\
          \"remote_current_user\":\"{{ couch_user }}\", \"remote_current_password\":\"{{ couch_password }}\"}"
   loop: "{{ groups['slaves'] }}"
- 
+  when: ansible_host == master_instance
 
 
 - name: add node
@@ -50,6 +67,7 @@
   uri:
     url: http://{{ couch_user }}:{{ couch_password }}@{{ master_instance }}:5984/_cluster_setup
     method: POST
+    status_code: 409
     headers:
       Content-Type: "application/json"
     url_username: "{{ couch_user }}"
@@ -59,26 +77,22 @@
     body: "{\"action\": \"add_node\", \"host\":\"{{ ansible_host }}\",\
          \"port\": \"5984\", \"username\": \"{{ couch_user }}\", \"password\":\"{{ couch_password }}\"}"
   loop: "{{ groups['slaves'] }}"
-
+  when: ansible_host == master_instance
 
 - name: check
   shell: curl http://127.0.0.1:5984
-  loop: "{{ group['All'] }}"
   register: chk
 
 - debug:
-  var: item.stdout_lines
-  loop: "{{ chk.results }}"
+    var: chk
 
 
 - name: double check
   command: "curl -XGET http://{{ couch_user }}:{{ couch_password }}@{{ ansible_host }}:5984/"
-  loop: "{{ group['All'] }}"
   register: dchk
 
 - debug:
-  var: item.stdout_lines
-  loop: "{{ dchk.results }}"
+    var: dchk 
 
 
 - name: finish cluster
@@ -86,6 +100,7 @@
   uri:
     url: http://{{ couch_user }}:{{ couch_password }}@{{ master_instance }}:5984/_cluster_setup
     method: POST
+    status_code: 201
     headers:
       Content-Type: "application/json"
     url_username: "{{ couch_user }}"
@@ -93,3 +108,4 @@
     force_basic_auth: yes
     body_format: json
     body: "{\"action\": \"finish_cluster\"}"
+  when: ansible_host == master_instance
