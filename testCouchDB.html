@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script>
+        console.log('test');
+        var xhttp = new XMLHttpRequest();
+        var url = "http://admin:admin@172.26.131.149:5984/aurin-property/_design/housePrice/_view/SoldYearMinimum?group_level=3";
+        xhttp.onreadystatechange = function() {
+		    
+            console.log(this.status);
+            if (this.readyState == 4 && this.status == 200) {
+				console.log(xhttp.responseText);
+            }
+        };
+        xhttp.open("GET", url, true);
+		xhttp.setRequestHeader('Authorization', 'Basic YWRtaW46YWRtaW4=');
+        xhttp.send();
+    </script>
+  </body>
+</html>
