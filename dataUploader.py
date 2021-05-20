@@ -6,7 +6,7 @@ import geopandas as gpd
 
 def upload(db_name, payload, doc_id):
     headers = {'content-type': 'application/json'}
-    url = 'http://admin:admin@172.26.134.87:5984/' + db_name + '/' + doc_id
+    url = 'http://admin:admin@couchdbnode:5984/' + db_name + '/' + doc_id
     r = requests.put(url, data=payload, headers=headers)
     print(r.text)
 
@@ -14,12 +14,12 @@ def bulk_upload(db_name, payload):
     docs = {'docs': payload}
     docs = json.dumps(docs)
     headers = {'content-type': 'application/json'}
-    url = 'http://admin:admin@172.26.134.87:5984/' + db_name + '/_bulk_docs'
+    url = 'http://admin:admin@couchdbnode:5984/' + db_name + '/_bulk_docs'
     r = requests.post(url, data=docs, headers=headers)
     print(r.text)
 
 def create_db(name):
-    url = 'http://admin:admin@172.26.134.87:5984/' + name
+    url = 'http://admin:admin@couchdbnode:5984/' + name
     r = requests.put(url)
     print(r.text)
 
