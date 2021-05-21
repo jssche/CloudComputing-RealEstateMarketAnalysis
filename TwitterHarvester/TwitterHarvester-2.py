@@ -10,19 +10,20 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 class TwitterHarvester():
     def __init__(self, c_id):
-        consumer_key = ['W3nWSuPyudnw8142u58LNXiTc'][c_id]
-        consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p'][c_id]
-        access_token = ['3149835139-Ey1XqWLn6Mk1MFKcHbTtaDJ9NZUETZJYgISfLjW'][c_id]
-        token_secret = ['Y0ZffGkSBbaYYSkvitsEunU9gyj2EAERWMxUhAaiPe30k'][c_id]
+        consumer_key = ['W3nWSuPyudnw8142u58LNXiTc']
+        consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p']
+        access_token = ['3149835139-Ey1XqWLn6Mk1MFKcHbTtaDJ9NZUETZJYgISfLjW']
+        token_secret = ['Y0ZffGkSBbaYYSkvitsEunU9gyj2EAERWMxUhAaiPe30k']
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
+        self.c_id = c_id
         self.api = tweepy.API(auth)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
-        url = ip + name
+        url = ip + '/' + name
         r = requests.put(url)
         print(r.text)
 
@@ -31,24 +32,6 @@ class TwitterHarvester():
 
     def getSentimentScores(self, tweet):
         return self.analyzer.polarity_scores(tweet)['compound']
-
-    def prepare_data(self, tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city):
-        batch = []
-        zipped = zip(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
-        for item in zipped:
-            tweet = {}
-            tweet['_id'] = item[0]
-            tweet['city'] = city
-            tweet['created_at'] = item[1]
-            tweet['text'] = item[2]
-            tweet['retweet_count'] = item[3]
-            tweet['favorite_count'] = item[4]
-            tweet['hashtag'] = item[5]
-            tweet['sentiment'] = item[6]
-            batch.append(tweet)
-        docs = {'docs': batch}
-        docs = json.dumps(docs)
-        return docs
 
     def bulk_upload(self, ip, payload):
         headers = {'content-type': 'application/json'}
@@ -70,7 +53,7 @@ class RETHarvester(TwitterHarvester):
     def __init__(self, c_id):
         super().__init__(c_id)
 
-    def harvest(self, n, queries):
+    def harvest(self, n, query):
         tid = []
         created_at = []
         tweet_text = []
@@ -79,19 +62,18 @@ class RETHarvester(TwitterHarvester):
         hashtags = []
         tweet_ss = []
 
-        for query in queries:
-            cursor = tweepy.Cursor(self.api.search,q=query,tweet_mode="extended").items(n)
-            # print(cursor)
-            for t in cursor:
-                tweet_info = t._json
-                # print(tweet_info)
-                # only harvest non-retweeted tweets
-                try:
-                    tweet_info['retweeted_status']
-                except KeyError:
-                    text = self.clean_tweet(tweet_info['full_text'])
-                    ss = self.getSentimentScores(text)
-                    
+        cursor = tweepy.Cursor(self.api.search,q=query,tweet_mode="extended").items(n)
+        # print(cursor)
+        for t in cursor:
+            tweet_info = t._json
+            # print(tweet_info)
+            # only harvest non-retweeted tweets
+            try:
+                tweet_info['retweeted_status']
+            except KeyError:
+                text = self.clean_tweet(tweet_info['full_text'])
+                ss = self.getSentimentScores(text)
+                if ss != 0: 
                     tid.append(tweet_info['id_str'])
                     created_at.append(tweet_info['created_at'])
                     tweet_text.append(text)
@@ -99,7 +81,28 @@ class RETHarvester(TwitterHarvester):
                     favorite_count.append(tweet_info['favorite_count'])
                     hashtags.append(tweet_info['entities']['hashtags'])
                     tweet_ss.append(ss)    
-            return tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss
+
+        return tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss
+
+
+    def prepare_data(self, tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city, topic):
+        batch = []
+        zipped = zip(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
+        for item in zipped:
+            tweet = {}
+            tweet['_id'] = item[0]
+            tweet['city'] = city
+            tweet['topic'] = topic
+            tweet['created_at'] = item[1]
+            tweet['text'] = item[2]
+            tweet['retweet_count'] = item[3]
+            tweet['favorite_count'] = item[4]
+            tweet['hashtag'] = item[5]
+            tweet['sentiment'] = item[6]
+            batch.append(tweet)
+        docs = {'docs': batch}
+        docs = json.dumps(docs)
+        return docs
 
 
 class GEOHarvester(TwitterHarvester):
@@ -136,12 +139,32 @@ class GEOHarvester(TwitterHarvester):
         return max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
 
 
-def collect_property_opinion(c_id):
-    RET = RETHarvester(0)
+    def prepare_data(self, tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city):
+        batch = []
+        zipped = zip(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
+        for item in zipped:
+            tweet = {}
+            tweet['_id'] = item[0]
+            tweet['city'] = city
+            tweet['created_at'] = item[1]
+            tweet['text'] = item[2]
+            tweet['retweet_count'] = item[3]
+            tweet['favorite_count'] = item[4]
+            tweet['hashtag'] = item[5]
+            tweet['sentiment'] = item[6]
+            batch.append(tweet)
+        docs = {'docs': batch}
+        docs = json.dumps(docs)
+        return docs
+
+
+def collect_property_opinion(c_id, RET):
     city = ['melbourne', 'sydney', 'brisbane'][c_id]
-    queries = ['buy house {}'.format(city) , 'house market {}'.format(city), 'real estate market {}'.format(city)]
-    tweets = RET.harvest(20, queries)
-    print(tweets)
+    queries = ['buy house {}'.format(city) , 'house market {}'.format(city), 'house price {}'.format(city)]
+    for query in queries:
+        tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(10, query)
+        RET.prepare_data()
+        
 
 
 def collect_city_opinion(c_id):
@@ -153,16 +176,19 @@ def collect_city_opinion(c_id):
     while count < 2:
         max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, 15)
         docs = GEO.prepare_data(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city)
+        # GEO.bulk_upload('http://admin:admin@172.26.134.87:5984', docs)
         count += 1
         print(docs)
         # time.sleep(60)
     
 
 def main():
-    # get container id
-    c_id = int(os.environ.get('env_val')[-1])
-    # collect_property_opinion(0) -> change to stream listener
-    collect_city_opinion(c_id)
+    # c_id = int(os.environ.get('env_val')[-1])
+    # RET = RETHarvester(c_id)
+    # collect_property_opinion(0) # -> change to stream listener
+    # GEO.create_db('http://admin:admin@172.26.134.87:5984', 'twitter-city')
+    collect_city_opinion(0)
+
 
 
 if __name__ == "__main__":
