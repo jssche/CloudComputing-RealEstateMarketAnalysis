@@ -2,6 +2,14 @@
   set_fact:
     master_instance: "{{ groups['instance_1'][0] }}"
 
+- name: create docker network which includes couchdbnode
+  become: yes
+  docker_network:
+    name: ccc_docker_network
+    connected:
+      - couchdbnode
+    appends: yes
+
 - name: create couch directory
   become: yes
   file:
@@ -11,6 +19,12 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
+#- name: show the groups the host(s) are in
+#  debug:
+#    msg: "{{ group_names }} | select('search','instance') | list | count > 0"
+#    msg: 
+#  when: group_names is search("instance")
+#  with_items: "{{ group_names }}"
 - name: copy uploader docker-compose to couchdir
   become: yes
   copy:
@@ -19,14 +33,6 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-- name: create docker network which includes couchdbnode
-  become: yes
-  docker_network:
-    name: ccc_docker_network
-    connected:
-      - couchdbnode
-    appends: yes
-
 - name: upload Aurin data by docker_compose
   become: yes
   docker_compose:
@@ -34,6 +40,21 @@
     pull: yes
     state: present
   when: ansible_host == master_instance
+
+- name: copy twitter harvester docker-compose to couchdir
+  become: yes
+  template:
+    src: docker-compose.yaml.j2
+    dest: "{{ couch_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: deploy twitter harvester by docker_compose
+  become: yes
+  docker_compose:
+    project_src: "{{ couch_dir }}"
+    pull: yes
+    state: present
 
 #- name: upload Aurin data by docker_container
 #  become: yes

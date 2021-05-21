@@ -4,7 +4,10 @@ services:
   datauploader:
 #    depends_on:
 #      - couchdbnode
-    image: liam1018/datauploader
+    image: liam1018/datauploader3
+#  twitterharvester:
+#    image: liam1018/twitterharvester2
+
     
 networks:
   default:
