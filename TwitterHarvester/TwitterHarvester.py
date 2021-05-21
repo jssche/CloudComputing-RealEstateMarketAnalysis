@@ -160,7 +160,7 @@ def collect_property_opinion(c_id, RET, db):
         tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(50, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
         # print(docs)
-        RET.bulk_upload('http://admin:admin@172.26.134.87:5984/'+db, docs)
+        RET.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
 
 
 def collect_city_opinion(c_id, GEO, db):
@@ -171,7 +171,7 @@ def collect_city_opinion(c_id, GEO, db):
     while count < 10:
         max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, 15)
         docs = GEO.prepare_data(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city)
-        GEO.bulk_upload('http://admin:admin@172.26.134.87:5984/'+db, docs)
+        GEO.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
         count += 1
         # print(docs)
         time.sleep(60)
@@ -187,8 +187,8 @@ def main():
 
     city_db = 'twitter-city'
     RET_db = 'twitter-property'
-    GEO.create_db('http://admin:admin@172.26.134.87:5984', city_db)
-    RET.create_db('http://admin:admin@172.26.134.87:5984', RET_db)
+    GEO.create_db('http://admin:admin@couchdbnode:5984', city_db)
+    RET.create_db('http://admin:admin@couchdbnode:5984', RET_db)
 
     collect_property_opinion(c_id, RET, RET_db)
     collect_city_opinion(c_id, GEO, city_db)
