@@ -2,5 +2,11 @@ version: "3.7"
 
 services:
   datauploader:
-    image: liam1018/datauploader-planb
+#    depends_on:
+#      - couchdbnode
+    image: liam1018/datauploader
     
+networks:
+  default:
+    external: true
+    name: ccc_docker_network

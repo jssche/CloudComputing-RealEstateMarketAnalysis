@@ -19,11 +19,31 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
+- name: create docker network which includes couchdbnode
+  become: yes
+  docker_network:
+    name: ccc_docker_network
+    connected:
+      - couchdbnode
+    appends: yes
 
-- name: upload Aurin data
+- name: upload Aurin data by docker_compose
   become: yes
   docker_compose:
     project_src: "{{ couch_dir }}"
     pull: yes
     state: present
   when: ansible_host == master_instance
+
+#- name: upload Aurin data by docker_container
+#  become: yes
+#  docker_container:
+#    name: datauploader
+#    image: liam1018/datauploader-planb
+#    state: started
+#  when: ansible_host == master_instance
+
+#- name: upload by shell
+#  become: yes
+#  shell: "sudo docker run liam1018/datauploader-planb"
+#  when: ansible_host == master_instance
