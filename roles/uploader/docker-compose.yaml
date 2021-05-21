@@ -1,0 +1,6 @@
+version: "3.7"
+
+services:
+  datauploader:
+    image: liam1018/datauploader-planb
+    

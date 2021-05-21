@@ -80,3 +80,4 @@ couch_password: admin
 couch_version: ibmcom/couchdb3:3.0.0
 couch_cookie: a192aeb9904e6590849337933b000c99
 couch_data: couchdb
+couch_dir: "/root/couchdir"
