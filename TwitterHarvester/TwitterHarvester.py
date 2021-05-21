@@ -179,19 +179,19 @@ def collect_city_opinion(c_id, GEO, db):
 
 def main():
     # get container id
-    c_id = 2
-    # c_id = int(os.environ.get('env_val')[-1])
+    # c_id = 2
+    c_id = int(os.environ.get('env_val')[-1])
 
-    # GEO = GEOHarvester(c_id)
+    GEO = GEOHarvester(c_id)
     RET = RETHarvester(c_id)
 
-    # city_db = 'twitter-city'
+    city_db = 'twitter-city'
     RET_db = 'twitter-property'
-    # GEO.create_db('http://admin:admin@172.26.134.87:5984', city_db)
-    # RET.create_db('http://admin:admin@172.26.134.87:5984', RET_db)
+    GEO.create_db('http://admin:admin@172.26.134.87:5984', city_db)
+    RET.create_db('http://admin:admin@172.26.134.87:5984', RET_db)
 
     collect_property_opinion(c_id, RET, RET_db)
-    # collect_city_opinion(c_id, GEO, city_db)
+    collect_city_opinion(c_id, GEO, city_db)
 
 
 if __name__ == "__main__":
