@@ -34,7 +34,7 @@ class  RETListener(StreamListener):
             tweet['favorite_count'] = tweet_info['favorite_count']
             tweet['hashtag'] = tweet_info['entities']['hashtags']
             tweet['sentiment'] = ss
-
+            # print(tweet)
             tweet = json.dumps(tweet)
             self.upload(tweet, t_id)
             
@@ -56,7 +56,7 @@ class  RETListener(StreamListener):
         print(r.text)
 
 
-class TwitterStream():
+class TwitterStreamer():
     def __init__(self, c_id, city, query, db):
         consumer_key = ['W3nWSuPyudnw8142u58LNXiTc', 'wL5sumrKtFVWCeK6Sc9rhjUkt', 'ASqO5zC2V0BkRb6Lyih9lJouk'][c_id]
         consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p',
@@ -72,13 +72,13 @@ class TwitterStream():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy='http://wwwproxy.unimelb.edu.au:8000/', max_retries=3)
+        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy='http://wwwproxy.unimelb.edu.au:8000/')
         self.analyzer = SentimentIntensityAnalyzer()
         self.listener = RETListener(city, query, db)
         self.query = query
 
     def startStream(self):
-        stream = tweepy.Stream(auth=self.api.auth, listener=self.listener)
+        stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=3)
         try:
             print('Start streaming.')
             print(self.query)
@@ -98,7 +98,7 @@ def main():
 
     # generate query, query has to be in the format of of a list, eg. [q1, q2 ..]
     query =  ['house price ' + city ]
-    RETStreamer = TwitterStream(c_id, city, query, 'twitter-property')
+    RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
     RETStreamer.startStream()
 
 if __name__ == "__main__":
