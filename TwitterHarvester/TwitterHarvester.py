@@ -174,7 +174,7 @@ def collect_property_opinion(c_id, RET, db, n):
     queries = ['house price {}'.format(city)]
     # 'buy house {}'.format(city) , 'house market {}'.format(city), 
     for query in queries:
-        # print(query)
+        print(query)
         tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(n, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
         RET.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
@@ -215,15 +215,15 @@ def main():
     GEO.create_db('http://admin:admin@couchdbnode:5984', city_db)
     RET.create_db('http://admin:admin@couchdbnode:5984', RET_db)
 
-    collect_property_opinion(c_id, RET, RET_db, 5)
-    collect_city_opinion(c_id, GEO, city_db, 1, 15)
+    collect_property_opinion(c_id, RET, RET_db, 50)
+    collect_city_opinion(c_id, GEO, city_db, 10, 15)
 
     # Find the topics of each city and upload to db
     topic_db = 'twitter-city-topic'
     city_topics = json.dumps(TwCitytopicAnalyzer("couchdbnode",'admin','admin').topicanalysis(5,3))
-    # print(city_topics)
-    GEO.create_db('http://admin:admin@couchdbnode', topic_db)
-    GEO.upload('http://admin:admin@couchdbnode', topic_db, city_topics)
+    print(city_topics)
+    GEO.create_db('http://admin:admin@couchdbnode:5984', topic_db)
+    GEO.upload('http://admin:admin@couchdbnode:5984', topic_db, city_topics)
 
     try:
         start_streaming(c_id)
