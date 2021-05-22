@@ -14,19 +14,19 @@ volumes:
   - vol_name: volume1
     vol_size: 50
     device: /dev/vdb
-    mountpoint: /couchdb
+    mountpoint: couchdb
   - vol_name: volume2
     vol_size: 50
     device: /dev/vdb
-    mountpoint: /couchdb
+    mountpoint: couchdb
   # - vol_name: volume3
   #   vol_size: 50
   #   device: /dev/vdb
-  #   mountpoint: /couchdb
+  #   mountpoint: couchdb
   # - vol_name: volume4
   #   vol_size: 50
   #   device: /dev/vdb
-  #   mountpoint: /couchdb
+  #   mountpoint: couchdb
 
 ################## Security group ##################
 # For each instance, define the TCP rule.

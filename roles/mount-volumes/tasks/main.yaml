@@ -1,3 +1,7 @@
+#- name: Formatting
+#  become: yes
+#  shell: "mkfs.ext4 /dev/vdb"
+
 - name: Make file system
   become: yes
   filesystem:
