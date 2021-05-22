@@ -5,7 +5,11 @@ import json
 import requests
 import tweepy
 import nltk
+nltk.set_proxy('http://wwwproxy.unimelb.edu.au:8000/')
+nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from topicanalysis import TwCitytopicAnalyzer
+from TwitterStreamer import TwitterStreamer
 
 
 class TwitterHarvester():
@@ -24,7 +28,7 @@ class TwitterHarvester():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/',retry_count=3, retry_delay=60)
+        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/', retry_count=3, retry_delay=60)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
@@ -41,6 +45,12 @@ class TwitterHarvester():
     def bulk_upload(self, ip, payload):
         headers = {'content-type': 'application/json'}
         url = ip + '/_bulk_docs'
+        r = requests.post(url, data=payload, headers=headers)
+        print(r.text)
+    
+    def upload(self, ip, db, payload):
+        headers = {'content-type': 'application/json'}
+        url = ip + '/' + db 
         r = requests.post(url, data=payload, headers=headers)
         print(r.text)
 
@@ -167,8 +177,8 @@ def collect_property_opinion(c_id, RET, db, n):
         # print(query)
         tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(n, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
-        # print(docs)
         RET.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
+        # print(docs)
 
 
 def collect_city_opinion(c_id, GEO, db, batch, n):
@@ -183,13 +193,20 @@ def collect_city_opinion(c_id, GEO, db, batch, n):
         count += 1
         # print(docs)
         # time.sleep(60)
+
+def start_streaming(c_id):
+    city = ['melbourne', 'sydney', 'brisbane'][c_id]
+    query =  ['house price ' + city ]
+    RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
+    RETStreamer.startStream()
     
 
 def main():
-    # get container id
+    # Get container id
     # c_id = 2
     c_id = int(os.environ.get('env_val')[-1])
 
+    # Collect twitter data 
     RET = RETHarvester(c_id)
     GEO = GEOHarvester(c_id)
     
@@ -199,7 +216,20 @@ def main():
     RET.create_db('http://admin:admin@couchdbnode:5984', RET_db)
 
     collect_property_opinion(c_id, RET, RET_db, 5)
-    collect_city_opinion(c_id, GEO, city_db, 10, 15)
+    collect_city_opinion(c_id, GEO, city_db, 1, 15)
+
+    # Find the topics of each city and upload to db
+    topic_db = 'twitter-city-topic'
+    city_topics = json.dumps(TwCitytopicAnalyzer("couchdbnode",'admin','admin').topicanalysis(5,3))
+    # print(city_topics)
+    GEO.create_db('http://admin:admin@couchdbnode', topic_db)
+    GEO.upload('http://admin:admin@couchdbnode', topic_db, city_topics)
+
+    try:
+        start_streaming(c_id)
+    except:
+        print("error occured during stream, please restart...")
+        return 
 
 
 if __name__ == "__main__":

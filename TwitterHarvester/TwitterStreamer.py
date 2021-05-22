@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import json
 import requests
 import tweepy
@@ -34,10 +35,14 @@ class  RETListener(StreamListener):
             tweet['favorite_count'] = tweet_info['favorite_count']
             tweet['hashtag'] = tweet_info['entities']['hashtags']
             tweet['sentiment'] = ss
-            # print(tweet)
+            print(tweet)
             tweet = json.dumps(tweet)
-            self.upload(tweet, t_id)
-            
+            # self.upload(tweet, t_id)
+
+    def on_limit(self,status):
+        print ("Rate Limit Exceeded, Sleep for 15 Mins")
+        time.sleep(15 * 60)
+        return True
 
     def on_error(self, status_code):
         print(status_code)
@@ -90,18 +95,18 @@ class TwitterStreamer():
             stream.disconnect()
 
 
-def main():
-    # get container id
-    # c_id = 0
-    c_id = int(os.environ.get('env_val')[-1])
-    city = ['melbourne', 'sydney', 'brisbane'][c_id]
+# def main():
+#     # get container id
+#     c_id = 0
+#     # c_id = int(os.environ.get('env_val')[-1])
+#     city = ['melbourne', 'sydney', 'brisbane'][c_id]
 
-    # generate query, query has to be in the format of of a list, eg. [q1, q2 ..]
-    query =  ['house price ' + city ]
-    RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
-    RETStreamer.startStream()
+#     # generate query, query has to be in the format of of a list, eg. [q1, q2 ..]
+#     query =  ['house price ' + city ]
+#     RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
+#     RETStreamer.startStream()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 
