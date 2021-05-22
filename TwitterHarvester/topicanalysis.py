@@ -6,6 +6,7 @@ from nltk.tokenize import TweetTokenizer
 nltk.set_proxy('http://wwwproxy.unimelb.edu.au:8000/')
 nltk.download('words')
 nltk.download('wordnet')
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 import gensim
 
