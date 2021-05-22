@@ -7,17 +7,24 @@ import tweepy
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+
 class TwitterHarvester():
     def __init__(self, c_id):
-        consumer_key = ['W3nWSuPyudnw8142u58LNXiTc'][0]
-        consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p'][0]
-        access_token = ['3149835139-Ey1XqWLn6Mk1MFKcHbTtaDJ9NZUETZJYgISfLjW'][0]
-        token_secret = ['Y0ZffGkSBbaYYSkvitsEunU9gyj2EAERWMxUhAaiPe30k'][0]
+        consumer_key = ['W3nWSuPyudnw8142u58LNXiTc', 'wL5sumrKtFVWCeK6Sc9rhjUkt', 'ASqO5zC2V0BkRb6Lyih9lJouk'][c_id]
+        consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p',
+                           '931N28Rx14CBLJGQGrkSj9fBl4RQTJI7W6Gy8aN4bjMMmDxghE',
+                           'cBFQDKFkXbcqpGJKYFrKZEVMhZsRafxm9XsVNptEk8mFJWOn9q'][c_id]
+        access_token = ['3149835139-Ey1XqWLn6Mk1MFKcHbTtaDJ9NZUETZJYgISfLjW',
+                        '1233990955939688451-e0tjVg2xMCpdjNT8agJ27KGcxhrPRV',
+                        '768639445830553601-jDmJU2HW861HAWJSatfsCWL6hiVU15V'][c_id]
+        token_secret = ['Y0ZffGkSBbaYYSkvitsEunU9gyj2EAERWMxUhAaiPe30k',
+                        '3DykoaCQ8GtG0EgmOaywIPzSnw9Nk3alsC93hd7ohUT6U',
+                        'NwqCafV1Hq4WTcy9Pp9QBT44vBFh85ckLMAJxQ78Qmqye'][c_id]
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/')
+        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/',retry_count=3, retry_delay=60)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
@@ -99,6 +106,7 @@ class RETHarvester(TwitterHarvester):
         docs = json.dumps(docs)
         return docs
 
+
 class GEOHarvester(TwitterHarvester):
     def __init__(self, c_id):
         super().__init__(c_id)
@@ -179,7 +187,7 @@ def collect_city_opinion(c_id, GEO, db, batch, n):
 
 def main():
     # get container id
-    # c_id = 0
+    # c_id = 2
     c_id = int(os.environ.get('env_val')[-1])
 
     RET = RETHarvester(c_id)
