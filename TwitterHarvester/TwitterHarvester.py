@@ -173,7 +173,7 @@ def collect_city_opinion(c_id, GEO, db):
         GEO.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
         count += 1
         # print(docs)
-        time.sleep(60)
+        # time.sleep(60)
     
 
 def main():

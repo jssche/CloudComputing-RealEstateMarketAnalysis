@@ -45,13 +45,13 @@ def uploadData(db_name, cols, new_cols, top_root):
                         data = prepare_data(raw_data, cols, new_cols, year, city)
                     elif db_name == 'aurin-population':
                         city = file_path[77:80]
-                        data = prepare_data(raw_data, cols, new_cols, city)
+                        data = prepare_data(raw_data, cols, new_cols, None, city)
                     elif db_name == 'aurin-homeless':
                         city = file_path[63:66]
-                        data = prepare_data(raw_data, cols, new_cols, city)
+                        data = prepare_data(raw_data, cols, new_cols, None, city)
                     else:
                         data = prepare_data(raw_data, cols, new_cols)
-                    # bulk_upload(db_name,data)
+                    bulk_upload(db_name,data)
 
 def prepare_data(raw_data, cols, new_cols, year=None, city=None):
     output = []
@@ -196,19 +196,25 @@ def main():
                             'client_count',
                             'sa3name']
     }
-    # create databases
-    # for name in db_names:
+    # create databases and add design document
+    for name in db_names:
     #     create_db(name)
-    #     viewGenerator('couchdbnode', 'admin', 'admin', name)
+        viewGenerator('172.26.134.87', 'admin', 'admin', name)
 
     # upload Polygon geo locations
     # uploadGeoData(db_names[0], dir_dict[db_names[0]], cities)
 
-    # upload data
+    # upload property data
     # uploadData(db_names[1], col_dict[db_names[1]], new_cols[db_names[1]], dir_dict[db_names[1]])
+
+    # upload population data
     # uploadData(db_names[2], col_dict[db_names[2]], new_cols[db_names[2]], dir_dict[db_names[2]])
+
+    # upload building data
     # uploadData(db_names[3], col_dict[db_names[3]], new_cols[db_names[3]], dir_dict[db_names[3]])
-    uploadData(db_names[4], col_dict[db_names[4]], new_cols[db_names[4]], dir_dict[db_names[4]])
+
+    # upload homeless data
+    # uploadData(db_names[4], col_dict[db_names[4]], new_cols[db_names[4]], dir_dict[db_names[4]])
 
     
 if __name__ == "__main__":
