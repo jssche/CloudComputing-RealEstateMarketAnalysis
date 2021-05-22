@@ -5,7 +5,6 @@ import json
 import requests
 import tweepy
 import nltk
-nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 class TwitterHarvester():
@@ -179,12 +178,12 @@ def collect_city_opinion(c_id, GEO, db):
 
 def main():
     # get container id
-    # c_id = 2
+    # c_id = 0
     c_id = int(os.environ.get('env_val')[-1])
 
-    GEO = GEOHarvester(c_id)
     RET = RETHarvester(c_id)
-
+    GEO = GEOHarvester(c_id)
+    
     city_db = 'twitter-city'
     RET_db = 'twitter-property'
     GEO.create_db('http://admin:admin@couchdbnode:5984', city_db)

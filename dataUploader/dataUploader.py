@@ -7,7 +7,7 @@ from view2couchdb import viewGenerator
 
 def upload(db_name, payload, doc_id):
     headers = {'content-type': 'application/json'}
-    url = 'http://admin:admin@couchdbnode:5984/' + db_name + '/' + doc_id
+    url = 'http://admin:admin@172.26.134.87:5984/' + db_name + '/' + doc_id
     r = requests.put(url, data=payload, headers=headers)
     print(r.text)
 
@@ -15,12 +15,12 @@ def bulk_upload(db_name, payload):
     docs = {'docs': payload}
     docs = json.dumps(docs)
     headers = {'content-type': 'application/json'}
-    url = 'http://admin:admin@couchdbnode:5984/' + db_name + '/_bulk_docs'
+    url = 'http://admin:admin@172.26.134.87:5984/' + db_name + '/_bulk_docs'
     r = requests.post(url, data=docs, headers=headers)
     print(r.text)
 
 def create_db(name):
-    url = 'http://admin:admin@couchdbnode:5984/' + name
+    url = 'http://admin:admin@172.26.134.87:5984/' + name
     r = requests.put(url)
     print(r.text)
 
@@ -40,19 +40,28 @@ def uploadData(db_name, cols, new_cols, top_root):
                 with open(file_path) as f:
                     raw_data = json.load(f)
                     if db_name == 'aurin-building':
+                        city = file_path[22:25]
                         year = file_path[57:66] + 'FY'
-                        data = prepare_data(raw_data, cols, new_cols, year)
+                        data = prepare_data(raw_data, cols, new_cols, year, city)
+                    elif db_name == 'aurin-population':
+                        city = file_path[77:80]
+                        data = prepare_data(raw_data, cols, new_cols, city)
+                    elif db_name == 'aurin-homeless':
+                        city = file_path[63:66]
+                        data = prepare_data(raw_data, cols, new_cols, city)
                     else:
                         data = prepare_data(raw_data, cols, new_cols)
-                    bulk_upload(db_name,data)
+                    # bulk_upload(db_name,data)
 
-def prepare_data(raw_data, cols, new_cols, year=None):
+def prepare_data(raw_data, cols, new_cols, year=None, city=None):
     output = []
     raw_data = raw_data['features']
     for district in raw_data:
         data = {}
         if year != None:
             data['year'] = year
+        if city != None:
+            data['city'] = city
         for i in range(len(cols)):
             if district['properties'][cols[i]] != None:
                 data[new_cols[i]] = district['properties'][cols[i]]              
@@ -179,7 +188,7 @@ def main():
 
         'aurin-building': ['sa3code',
                             'sa3name',
-                            'new_houses_num',
+                            'new_houses_num',     
                             'new_other_residential_num'],
 
         'aurin-homeless': ['financial_year',
@@ -188,17 +197,17 @@ def main():
                             'sa3name']
     }
     # create databases
-    for name in db_names:
-        create_db(name)
-        viewGenerator('couchdbnode', 'admin', 'admin', name)
+    # for name in db_names:
+    #     create_db(name)
+    #     viewGenerator('couchdbnode', 'admin', 'admin', name)
 
     # upload Polygon geo locations
-    uploadGeoData(db_names[0], dir_dict[db_names[0]], cities)
+    # uploadGeoData(db_names[0], dir_dict[db_names[0]], cities)
 
     # upload data
-    uploadData(db_names[1], col_dict[db_names[1]], new_cols[db_names[1]], dir_dict[db_names[1]])
-    uploadData(db_names[2], col_dict[db_names[2]], new_cols[db_names[2]], dir_dict[db_names[2]])
-    uploadData(db_names[3], col_dict[db_names[3]], new_cols[db_names[3]], dir_dict[db_names[3]])
+    # uploadData(db_names[1], col_dict[db_names[1]], new_cols[db_names[1]], dir_dict[db_names[1]])
+    # uploadData(db_names[2], col_dict[db_names[2]], new_cols[db_names[2]], dir_dict[db_names[2]])
+    # uploadData(db_names[3], col_dict[db_names[3]], new_cols[db_names[3]], dir_dict[db_names[3]])
     uploadData(db_names[4], col_dict[db_names[4]], new_cols[db_names[4]], dir_dict[db_names[4]])
 
     
