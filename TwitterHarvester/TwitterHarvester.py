@@ -17,7 +17,7 @@ class TwitterHarvester():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth)
+        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/')
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
@@ -151,24 +151,25 @@ class GEOHarvester(TwitterHarvester):
         return docs
 
 
-def collect_property_opinion(c_id, RET, db):
+def collect_property_opinion(c_id, RET, db, n):
     city = ['melbourne', 'sydney', 'brisbane'][c_id]
-    queries = ['buy house {}'.format(city) , 'house market {}'.format(city), 'house price {}'.format(city)]
+    queries = ['house price {}'.format(city)]
+    # 'buy house {}'.format(city) , 'house market {}'.format(city), 
     for query in queries:
         print(query)
-        tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(50, query)
+        tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(n, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
         # print(docs)
         RET.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
 
 
-def collect_city_opinion(c_id, GEO, db):
+def collect_city_opinion(c_id, GEO, db, batch, n):
     city_coor = ["-37.8136,144.9631,30km","-33.869,151.209,30km","-27.471,153.026,30km"][c_id]
     city = ['melbourne', 'sydney', 'brisbane'][c_id]
     max_id = None
     count = 0
-    while count < 10:
-        max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, 15)
+    while count < batch:
+        max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, n)
         docs = GEO.prepare_data(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city)
         GEO.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
         count += 1
@@ -189,8 +190,8 @@ def main():
     GEO.create_db('http://admin:admin@couchdbnode:5984', city_db)
     RET.create_db('http://admin:admin@couchdbnode:5984', RET_db)
 
-    collect_property_opinion(c_id, RET, RET_db)
-    collect_city_opinion(c_id, GEO, city_db)
+    collect_property_opinion(c_id, RET, RET_db, 50)
+    collect_city_opinion(c_id, GEO, city_db, 10, 15)
 
 
 if __name__ == "__main__":
