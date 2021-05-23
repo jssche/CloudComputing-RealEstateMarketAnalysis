@@ -203,7 +203,7 @@ def collect_city_opinion(city, city_coor, GEO, cdbUrl, db, batch, n):
         GEO.bulk_upload(cdbUrl+ db, docs)
         count += 1
         # print(docs)
-        time.sleep(61)
+        # time.sleep(61)
 
 
 def start_streaming(c_id, city, cdbUrl):
@@ -244,7 +244,7 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 60, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 3, 12)
 
         # Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
@@ -252,6 +252,7 @@ def main():
         logging.info('Generated city topics')
         GEO.create_db(COUCHDB_URL, TOPIC_DB)
         GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
+        print('finished uploading city topics')
 
         try:
             start_streaming(c_id, city, COUCHDB_URL)
