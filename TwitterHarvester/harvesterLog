@@ -106,3 +106,4 @@ INFO:root:{"error":"file_exists","reason":"The database could not be created, th
 INFO:root:{"ok":true,"id":"17c06d01e23bb710e0cfd0fb7e16d770","rev":"1-4e7056e3ce64c7b1c881451d667d1124"}
 
 INFO:root:Start streaming. Streaming query: ['house price brisbane']
+INFO:root:Start streaming. Streaming query: ['house price sydney']
