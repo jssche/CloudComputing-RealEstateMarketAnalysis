@@ -3,6 +3,7 @@ import re
 import time
 import json
 import requests
+import logging
 import tweepy
 import nltk
 nltk.set_proxy('http://wwwproxy.unimelb.edu.au:8000/')
@@ -32,9 +33,9 @@ class TwitterHarvester():
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
-        url = ip + '/' + name
+        url = ip + name
         r = requests.put(url)
-        print(r.text)
+        logging.info(r.text)
 
     def clean_tweet(self,text):
         return ' '.join(re.sub("(@[A-Za-z0-9_-]+)|(\w+:\/\/\S+)"," ",text).split())
@@ -42,23 +43,26 @@ class TwitterHarvester():
     def getSentimentScores(self, tweet):
         return self.analyzer.polarity_scores(tweet)['compound']
 
-    def bulk_upload(self, ip, payload):
+    def bulk_upload(self, url, payload):
         headers = {'content-type': 'application/json'}
-        url = ip + '/_bulk_docs'
+        url = url + '/_bulk_docs'
         r = requests.post(url, data=payload, headers=headers)
-        print(r.text)
+        logging.info(r.text)
+        # print(r.text)
     
     def upload(self, ip, db, payload):
         headers = {'content-type': 'application/json'}
-        url = ip + '/' + db 
+        url = ip + db 
         r = requests.post(url, data=payload, headers=headers)
-        print(r.text)
+        logging.info(r.text)
+        # print(r.text)
 
     def limit_handled(self, cursor):
         while True:
             try:
                 yield next(cursor)
             except tweepy.RateLimitError:
+                logging.info ("Harvester rate limit exceeded, Sleep for 15 Mins")
                 time.sleep(15 * 60)
             except StopIteration:
                 break
@@ -76,24 +80,27 @@ class RETHarvester(TwitterHarvester):
         favorite_count = []
         hashtags = []
         tweet_ss = []
-
-        cursor = tweepy.Cursor(self.api.search,q=query,tweet_mode="extended").items(n)
-        for t in cursor:
-            tweet_info = t._json
-            # only harvest non-retweeted tweets
-            try:
-                tweet_info['retweeted_status']
-            except KeyError:
-                text = self.clean_tweet(tweet_info['full_text'])
-                ss = self.getSentimentScores(text)
-                
-                tid.append(tweet_info['id_str'])
-                created_at.append(tweet_info['created_at'])
-                tweet_text.append(text)
-                retweet_counts.append(tweet_info['retweet_count'])
-                favorite_count.append(tweet_info['favorite_count'])
-                hashtags.append(tweet_info['entities']['hashtags'])
-                tweet_ss.append(ss)    
+        try:
+            cursor = tweepy.Cursor(self.api.search,q=query,tweet_mode="extended").items(n) 
+            for t in cursor:
+                tweet_info = t._json
+                # only harvest non-retweeted tweets
+                try:
+                    tweet_info['retweeted_status']
+                except KeyError:
+                    text = self.clean_tweet(tweet_info['full_text'])
+                    ss = self.getSentimentScores(text)
+                    if ss != 0:
+                        tid.append(tweet_info['id_str'])
+                        created_at.append(tweet_info['created_at'])
+                        tweet_text.append(text)
+                        retweet_counts.append(tweet_info['retweet_count'])
+                        favorite_count.append(tweet_info['favorite_count'])
+                        hashtags.append(tweet_info['entities']['hashtags'])
+                        tweet_ss.append(ss)    
+        except:
+            logging.critical("Could not connect to Twitter, please restart...")
+            exit(0)
         return tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss
 
 
@@ -129,25 +136,29 @@ class GEOHarvester(TwitterHarvester):
         favorite_count = []
         hashtags = []
         tweet_ss = []
-        
-        cursor = self.limit_handled(tweepy.Cursor(self.api.search,tweet_mode="extended", lang="en", geocode=city, max_id = max_id).items(n))
-        for t in cursor:
-            tweet_info = t._json
-            try:
-                tweet_info['retweeted_status']
-            except KeyError:
-                text = self.clean_tweet(tweet_info['full_text'])
-                ss = self.getSentimentScores(text)
+        try:
+            cursor = self.limit_handled(tweepy.Cursor(self.api.search,tweet_mode="extended", lang="en", geocode=city, max_id = max_id).items(n))
+            for t in cursor:
+                tweet_info = t._json
+                try:
+                    tweet_info['retweeted_status']
+                except KeyError:
+                    text = self.clean_tweet(tweet_info['full_text'])
+                    ss = self.getSentimentScores(text)
 
-                tid.append(tweet_info['id_str'])
-                created_at.append(tweet_info['created_at'])
-                tweet_text.append(text)
-                retweet_counts.append(tweet_info['retweet_count'])
-                favorite_count.append(tweet_info['favorite_count'])
-                hashtags.append(tweet_info['entities']['hashtags'])
-                tweet_ss.append(ss)
-            
-        max_id = str(int(tid[-1])-1)
+                    tid.append(tweet_info['id_str'])
+                    created_at.append(tweet_info['created_at'])
+                    tweet_text.append(text)
+                    retweet_counts.append(tweet_info['retweet_count'])
+                    favorite_count.append(tweet_info['favorite_count'])
+                    hashtags.append(tweet_info['entities']['hashtags'])
+                    tweet_ss.append(ss)
+                
+            max_id = str(int(tid[-1])-1)
+        except:
+            logging.critical("Could not connect to Twitter, please restart...")
+            exit(0)
+
         return max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
 
     def prepare_data(self, tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city):
@@ -169,67 +180,85 @@ class GEOHarvester(TwitterHarvester):
         return docs
 
 
-def collect_property_opinion(c_id, RET, db, n):
-    city = ['melbourne', 'sydney', 'brisbane'][c_id]
+def collect_property_opinion(city, RET, cdbUrl, db, n):
     queries = ['house price {}'.format(city)]
     # 'buy house {}'.format(city) , 'house market {}'.format(city), 
     for query in queries:
         print(query)
+        logging.info('Collecting property tweets using query: {}..'.format(query))
         tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(n, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
-        RET.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
+        RET.bulk_upload(cdbUrl + db, docs)
         # print(docs)
 
 
-def collect_city_opinion(c_id, GEO, db, batch, n):
-    city_coor = ["-37.8136,144.9631,30km","-33.869,151.209,30km","-27.471,153.026,30km"][c_id]
-    city = ['melbourne', 'sydney', 'brisbane'][c_id]
+def collect_city_opinion(city, city_coor, GEO, cdbUrl, db, batch, n):
     max_id = None
     count = 0
     while count < batch:
+        if count % 50 == 0:
+            logging.info('Collecting {} city tweets, batch {}'.format(city, count))
         max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, n)
         docs = GEO.prepare_data(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city)
-        GEO.bulk_upload('http://admin:admin@couchdbnode:5984/'+db, docs)
+        GEO.bulk_upload(cdbUrl+ db, docs)
         count += 1
         # print(docs)
-        # time.sleep(60)
+        time.sleep(61)
 
-def start_streaming(c_id):
-    city = ['melbourne', 'sydney', 'brisbane'][c_id]
+
+def start_streaming(c_id, city, cdbUrl):
     query =  ['house price ' + city ]
-    RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
+    RETStreamer = TwitterStreamer(c_id, city, query, '/twitter-property', cdbUrl)
     RETStreamer.startStream()
     
 
 def main():
+    logging.basicConfig(filename='harvesterLog',level=logging.INFO)
+    CITIES = ['melbourne', 'sydney', 'brisbane']
+    CITIES_COOR = ["-37.8136,144.9631,30km","-33.869,151.209,30km","-27.471,153.026,30km"]
+    CITY_DB = '/twitter-city'
+    RET_DB = '/twitter-property'
+    TOPIC_DB = '/twitter-city-topic'
+    # COUCHDB_IP= '172.26.134.87'
+    COUCHDB_IP='couchdbnode'
+    COUCHDB_URL = 'http://admin:admin@{}:5984'.format(COUCHDB_IP)
+
     # Get container id
-    # c_id = 2
+    # c_id = 3
     c_id = int(os.environ.get('env_val')[-1])
 
-    # Collect twitter data 
-    RET = RETHarvester(c_id)
-    GEO = GEOHarvester(c_id)
-    
-    city_db = 'twitter-city'
-    RET_db = 'twitter-property'
-    GEO.create_db('http://admin:admin@couchdbnode:5984', city_db)
-    RET.create_db('http://admin:admin@couchdbnode:5984', RET_db)
+    # the master node (c_id = 0) continouslly sends ping request to the other nodes to check if they are alive.
+    # If the master node finds any failed slave node, it will harvest data on behalf of the failed node.
+    if c_id == 0:
+        pass
+    else:
+        c_id -= 1 
 
-    collect_property_opinion(c_id, RET, RET_db, 50)
-    collect_city_opinion(c_id, GEO, city_db, 10, 15)
+        city = CITIES[c_id]
+        city_coor = CITIES_COOR[c_id]
 
-    # Find the topics of each city and upload to db
-    topic_db = 'twitter-city-topic'
-    city_topics = json.dumps(TwCitytopicAnalyzer("couchdbnode",'admin','admin').topicanalysis(5,3))
-    print(city_topics)
-    GEO.create_db('http://admin:admin@couchdbnode:5984', topic_db)
-    GEO.upload('http://admin:admin@couchdbnode:5984', topic_db, city_topics)
+        # Collect twitter data 
+        RET = RETHarvester(c_id)
+        GEO = GEOHarvester(c_id)
+        
+        RET.create_db(COUCHDB_URL, RET_DB)
+        GEO.create_db(COUCHDB_URL, CITY_DB)
+        
+        collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 60, 12)
 
-    try:
-        start_streaming(c_id)
-    except:
-        print("error occured during stream, please restart...")
-        return 
+        # Find the topics of each city and upload to db
+        city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
+        print(city_topics)
+        logging.info('Generated city topics')
+        GEO.create_db(COUCHDB_URL, TOPIC_DB)
+        GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
+
+        try:
+            start_streaming(c_id, city, COUCHDB_URL)
+        except:
+            print("error occured during stream, please restart...")
+            return 
 
 
 if __name__ == "__main__":

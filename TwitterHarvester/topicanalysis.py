@@ -12,13 +12,14 @@ import gensim
 
 
 class TwCitytopicAnalyzer:
-    def __init__(self, server_ip,username,password):
+    def __init__(self, server_ip,username,password, city):
         serverAddress="http://%s:%s@%s:5984/" % (username, password, server_ip)
         self.server = couchdb.Server(serverAddress)
         self.dataDB = self.server["twitter-city"]
 
         # tokenizer & lemmatizer
         self.tt = TweetTokenizer()
+        self.city = city
         self.stopwords = set(stopwords.words('english'))
         self.lemmatizer = nltk.stem.wordnet.WordNetLemmatizer()
         self.words = set(nltk.corpus.words.words())  # a list of words provided by NLTK
@@ -48,16 +49,23 @@ class TwCitytopicAnalyzer:
         data_bne=[]
         sort_bytime = sorted(data, key=lambda x: time.mktime(time.strptime(x['created_at'], '%a %b %d %H:%M:%S +0000  %Y')))
         for each in sort_bytime:
-            if each['city'] == "melbourne":
+            if self.city == "melbourne" and each['city'] == "melbourne":
                 data_mel.append(each)
-            elif each['city'] == 'brisbane':
+            elif self.city == "brisbane" and each['city'] == 'brisbane':
                 data_bne.append(each)
-            elif each ['city'] == 'sydney':
+            elif self.city == "sydney" and each ['city'] == 'sydney':
                 data_syd.append(each)
-        syd_topics=self.preprocessedLDAmodel(data_syd,numTopics,numWords)
-        mel_topics=self.preprocessedLDAmodel(data_mel,numTopics,numWords)
-        bne_topics=self.preprocessedLDAmodel(data_bne,numTopics,numWords)
-        return {"syd":syd_topics,"mel":mel_topics,"bne":bne_topics}
+
+        all ={}
+        if len(data_mel) != 0:
+            all["mel"] = self.preprocessedLDAmodel(data_mel,numTopics,numWords)
+        if len(data_syd) != 0:
+            all["syd"] = self.preprocessedLDAmodel(data_syd,numTopics,numWords)
+        if len(data_bne) != 0:
+            all["bne"] = self.preprocessedLDAmodel(data_bne, numTopics,numWords)
+
+
+        return all
 
 
 
@@ -77,13 +85,13 @@ class TwCitytopicAnalyzer:
             preprocess = [w for w in preprocess if not w in self.stopwords]
             lemma_process = [self.lemmatize(w) for w in preprocess]
             data_text.append(lemma_process)
-        dictionary = gensim.corpora.Dictionary(data_text)
-        corpus = [dictionary.doc2bow(text) for text in data_text]
-        lda = gensim.models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=numTopics)
-        topics=[]
-        for topic in lda.print_topics(num_words=numWords):
-            topics.append(topic)
-        return topics
+            dictionary = gensim.corpora.Dictionary(data_text)
+            corpus = [dictionary.doc2bow(text) for text in data_text]
+            lda = gensim.models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=numTopics)
+            topics=[]
+            for topic in lda.print_topics(num_words=numWords):
+                topics.append(topic)
+            return topics
 
 
 #

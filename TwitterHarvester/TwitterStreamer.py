@@ -2,6 +2,7 @@ import os
 import re
 import time
 import json
+import logging
 import requests
 import tweepy
 from tweepy.streaming import StreamListener
@@ -10,12 +11,12 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 class  RETListener(StreamListener):
 
-    def __init__(self, city, query, db):
+    def __init__(self, city, query, url):
         super().__init__()
         self.analyzer = SentimentIntensityAnalyzer()
         self.city = city
         self.query = query
-        self.db_name = db
+        self.url = url
 
     def on_status(self, status):
         try:
@@ -37,15 +38,15 @@ class  RETListener(StreamListener):
             tweet['sentiment'] = ss
             print(tweet)
             tweet = json.dumps(tweet)
-            # self.upload(tweet, t_id)
+            self.upload(tweet, t_id)
 
     def on_limit(self,status):
-        print ("Rate Limit Exceeded, Sleep for 15 Mins")
+        logging.info ("Streamer rate limit exceeded, Sleep for 15 Mins")
         time.sleep(15 * 60)
         return True
 
     def on_error(self, status_code):
-        print(status_code)
+        logging.error("{} error occured during streaming, stopping the streamer now..".format(status_code))
         return False
 
     def clean_tweet(self,text):
@@ -56,13 +57,14 @@ class  RETListener(StreamListener):
 
     def upload(self, payload, doc_id):
         headers = {'content-type': 'application/json'}
-        url = 'http://admin:admin@couchdbnode:5984/' + self.db_name + '/' + doc_id
+        url = self.url + '/' + doc_id
         r = requests.put(url, data=payload, headers=headers)
-        print(r.text)
+        logging.info("Uploading new tweet to database.. Status: {}".format(r.text))
 
 
 class TwitterStreamer():
-    def __init__(self, c_id, city, query, db):
+    def __init__(self, c_id, city, query, db, cdbUrl):
+        url = cdbUrl + db
         consumer_key = ['W3nWSuPyudnw8142u58LNXiTc', 'wL5sumrKtFVWCeK6Sc9rhjUkt', 'ASqO5zC2V0BkRb6Lyih9lJouk'][c_id]
         consumer_secret = ['cNTNL1tBB9lQKNaIr11u1CLv0IMBRzc81JS7QqRLCNXy6b334p',
                            '931N28Rx14CBLJGQGrkSj9fBl4RQTJI7W6Gy8aN4bjMMmDxghE',
@@ -79,19 +81,19 @@ class TwitterStreamer():
 
         self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy='http://wwwproxy.unimelb.edu.au:8000/')
         self.analyzer = SentimentIntensityAnalyzer()
-        self.listener = RETListener(city, query, db)
+        self.listener = RETListener(city, query, url)
         self.query = query
 
     def startStream(self):
         stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=3)
         try:
-            print('Start streaming.')
-            print(self.query)
+            logging.info('Start streaming. Streaming query: {}'.format(self.query))
+            print('start streaming...')
             stream.filter(track=self.query)
         except KeyboardInterrupt as e :
-            print("Stopped.")
+            logging.info("Streaming interrupted..")
         finally:
-            print('Done.')
+            logging.info('Done.')
             stream.disconnect()
 
 
