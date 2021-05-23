@@ -227,12 +227,11 @@ def main():
     # c_id = 3
     c_id = int(os.environ.get('env_val')[-1])
 
-    # the master node (c_id = 0) continouslly sends ping request to the other nodes to check if they are alive.
-    # If the master node finds any failed slave node, it will harvest data on behalf of the failed node.
-    if c_id == 0:
+    # If the master node (c_id = 1) finds any failed slave node, it will harvest data on behalf of the failed node.
+    if c_id == 1:
         pass
     else:
-        c_id -= 1 
+        c_id -= 2 
 
         city = CITIES[c_id]
         city_coor = CITIES_COOR[c_id]

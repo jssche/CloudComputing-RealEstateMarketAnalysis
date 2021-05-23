@@ -198,7 +198,7 @@ def main():
     }
     # create databases and add design document
     for name in db_names:
-    #     create_db(name)
+        create_db(name)
         viewGenerator('couchdbnode', 'admin', 'admin', name)
 
     # upload Polygon geo locations
