@@ -97,18 +97,3 @@ class TwitterStreamer():
             stream.disconnect()
 
 
-# def main():
-#     # get container id
-#     c_id = 0
-#     # c_id = int(os.environ.get('env_val')[-1])
-#     city = ['melbourne', 'sydney', 'brisbane'][c_id]
-
-#     # generate query, query has to be in the format of of a list, eg. [q1, q2 ..]
-#     query =  ['house price ' + city ]
-#     RETStreamer = TwitterStreamer(c_id, city, query, 'twitter-property')
-#     RETStreamer.startStream()
-
-# if __name__ == "__main__":
-#     main()
-
-

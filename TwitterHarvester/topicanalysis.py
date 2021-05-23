@@ -92,11 +92,3 @@ class TwCitytopicAnalyzer:
             for topic in lda.print_topics(num_words=numWords):
                 topics.append(topic)
             return topics
-
-
-#
-# if __name__ == '__main__':
-#     test1 = TwCitytopicAnalyzer("172.26.134.87",'admin','admin').topicanalysis(5,3)
-#     print(test1)
-
-
