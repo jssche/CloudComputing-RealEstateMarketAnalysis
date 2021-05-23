@@ -203,7 +203,7 @@ def collect_city_opinion(city, city_coor, GEO, cdbUrl, db, batch, n):
         GEO.bulk_upload(cdbUrl+ db, docs)
         count += 1
         # print(docs)
-        # time.sleep(61)
+        time.sleep(61)
 
 
 def start_streaming(c_id, city, cdbUrl):
@@ -244,7 +244,7 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 3, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 300, 12)
 
         #Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
@@ -254,11 +254,15 @@ def main():
         GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
         print('finished uploading city topics')
 
-        # try:
-        start_streaming(c_id, city, COUCHDB_URL)
-        # except:
-            # print("error occured during stream, please restart...")
-            # return 
+        try_count = 0
+        try:
+            start_streaming(c_id, city, COUCHDB_URL)
+        except:
+            if try_count < 3:
+                print("retry {}: error occured during stream, restarting streaming...".format(try_count))
+                start_streaming(c_id, city, COUCHDB_URL)
+                try_count += 1
+            return 
 
 
 if __name__ == "__main__":
