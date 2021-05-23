@@ -1,4 +1,22 @@
 ################## Create container, cluster ##################
+- name: create couch directory
+  become: yes
+  file:
+    path: "{{ couch_dir }}"
+    recurse: yes
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: "Copy local.ini to /root/couchdb"
+  become: yes
+  template:
+    src: local.ini.j2
+    dest:  "{{ couch_dir }}/local.ini"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+
 - name: create containers
   become: yes
   docker_container:
@@ -11,6 +29,8 @@
     mounts:
       - source: "{{ couch_data }}"
         target: /opt/couchdb/data
+    volumes:
+      - "{{ couch_dir }}/local.ini:/opt/couchdb/etc/local.d/local.ini"
     env:
       COUCHDB_USER: "{{ couch_user }}"
       COUCHDB_PASSWORD: "{{ couch_password }}"

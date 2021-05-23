@@ -81,3 +81,5 @@ couch_version: ibmcom/couchdb3:3.0.0
 couch_cookie: a192aeb9904e6590849337933b000c99
 couch_data: couchdb
 couch_dir: "/root/couchdir"
+couch_num_shards: 8
+couch_num_replicas: 4

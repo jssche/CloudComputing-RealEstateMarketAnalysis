@@ -44,7 +44,7 @@
 
 - name: Initialise inventory.ini
   lineinfile:
-    line: "\n[master:children]\ninstance_1\n\n[slaves:children]\n"
+    line: "\n[master:children]\ninstance_1\n\n[slaves:children]"
     dest: inventory/inventory.ini
 
 - name: Fill in slaves using ip information

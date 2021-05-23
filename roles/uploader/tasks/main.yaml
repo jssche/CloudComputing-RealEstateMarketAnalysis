@@ -10,14 +10,14 @@
       - couchdbnode
     appends: yes
 
-- name: create couch directory
-  become: yes
-  file:
-    path: "{{ couch_dir }}"
-    recurse: yes
-    state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+# - name: create couch directory
+#   become: yes
+#   file:
+#     path: "{{ couch_dir }}"
+#     recurse: yes
+#     state: directory
+#     owner: "{{ ansible_user }}"
+#     group: "{{ ansible_user }}"
 
 #- name: show the groups the host(s) are in
 #  debug:
