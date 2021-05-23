@@ -19,14 +19,14 @@ volumes:
     vol_size: 50
     device: /dev/vdb
     mountpoint: couchdb
-  # - vol_name: volume3
-  #   vol_size: 50
-  #   device: /dev/vdb
-  #   mountpoint: couchdb
-  # - vol_name: volume4
-  #   vol_size: 50
-  #   device: /dev/vdb
-  #   mountpoint: couchdb
+  - vol_name: volume3
+    vol_size: 50
+    device: /dev/vdb
+    mountpoint: couchdb
+  - vol_name: volume4
+    vol_size: 50
+    device: /dev/vdb
+    mountpoint: couchdb
 
 ################## Security group ##################
 # For each instance, define the TCP rule.
@@ -43,18 +43,18 @@ security_groups:
     port_range_min: 1
     port_range_max: 65535
     remote_ip_prefix: 0.0.0.0/0
-  # - name: instance3-security-group
-  #   description: "security group for instance3"
-  #   protocol: tcp
-  #   port_range_min: 1
-  #   port_range_max: 65535
-  #   remote_ip_prefix: 0.0.0.0/0
-  # - name: instance4-security-group
-  #   description: "security group for instance4"
-  #   protocol: tcp
-  #   port_range_min: 1
-  #   port_range_max: 65535
-  #   remote_ip_prefix: 0.0.0.0/0
+  - name: instance3-security-group
+    description: "security group for instance3"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance4-security-group
+    description: "security group for instance4"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
 
 
 ################## Instance ##################
@@ -65,12 +65,12 @@ instances:
   - name: instance_2
     security_groups: instance2-security-group
     volumes: ['volume2']
-  # - name: instance_3
-  #   security_groups: instance3-security-group
-  #   volumes: ['volume3']
-  # - name: instance_4
-  #   security_groups: instance4-security-group
-  #   volumes: ['volume4']
+  - name: instance_3
+    security_groups: instance3-security-group
+    volumes: ['volume3']
+  - name: instance_4
+    security_groups: instance4-security-group
+    volumes: ['volume4']
 
 
 ################## Setup ##################

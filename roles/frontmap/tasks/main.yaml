@@ -1,0 +1,19 @@
+- name: store master ip address for later clustering
+  set_fact:
+    master_instance: "{{ groups['instance_1'][0] }}"
+
+- name: copy frontmap docker-compose to couchdir
+  become: yes
+  copy:
+    src: docker-compose.yaml
+    dest: "{{ couch_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: deploy frontmap by docker-compose
+  become: yes
+  docker_compose:
+    project_src: "{{ couch_dir }}"
+    pull: yes
+    state: present
+  when: ansible_host == master_instance
