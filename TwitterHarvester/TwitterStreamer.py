@@ -85,7 +85,7 @@ class TwitterStreamer():
         self.query = query
 
     def startStream(self):
-        stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=3)
+        stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=50)
         try:
             logging.info('Start streaming. Streaming query: {}'.format(self.query))
             print('start streaming...')

@@ -224,8 +224,8 @@ def main():
     COUCHDB_URL = 'http://admin:admin@{}:5984'.format(COUCHDB_IP)
 
     # Get container id
-    c_id = 3
-    # c_id = int(os.environ.get('env_val')[-1])
+    # c_id = 3
+    c_id = int(os.environ.get('env_val')[-1])
 
     # If the master node (c_id = 1) finds any failed slave node, it will harvest data on behalf of the failed node.
     if c_id == 1:
@@ -240,19 +240,19 @@ def main():
         RET = RETHarvester(c_id)
         GEO = GEOHarvester(c_id)
         
-        # RET.create_db(COUCHDB_URL, RET_DB)
-        # GEO.create_db(COUCHDB_URL, CITY_DB)
+        RET.create_db(COUCHDB_URL, RET_DB)
+        GEO.create_db(COUCHDB_URL, CITY_DB)
         
-        # collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        # collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 3, 12)
+        collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 3, 12)
 
-        # Find the topics of each city and upload to db
-        # city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
-        # print(city_topics)
-        # logging.info('Generated city topics')
-        # GEO.create_db(COUCHDB_URL, TOPIC_DB)
-        # GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
-        # print('finished uploading city topics')
+        #Find the topics of each city and upload to db
+        city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
+        print(city_topics)
+        logging.info('Generated city topics')
+        GEO.create_db(COUCHDB_URL, TOPIC_DB)
+        GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
+        print('finished uploading city topics')
 
         # try:
         start_streaming(c_id, city, COUCHDB_URL)
