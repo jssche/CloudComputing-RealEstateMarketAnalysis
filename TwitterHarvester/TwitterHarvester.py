@@ -254,7 +254,7 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 10, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 500, 12)
 
         #Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
