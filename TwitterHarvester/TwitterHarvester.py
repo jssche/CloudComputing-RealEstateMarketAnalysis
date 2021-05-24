@@ -29,7 +29,7 @@ class TwitterHarvester():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/', retry_count=3, retry_delay=60)
+        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/', retry_count=100, retry_delay=60)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
@@ -98,8 +98,11 @@ class RETHarvester(TwitterHarvester):
                         favorite_count.append(tweet_info['favorite_count'])
                         hashtags.append(tweet_info['entities']['hashtags'])
                         tweet_ss.append(ss)    
-        except:
-            logging.critical("Could not connect to Twitter, please restart...")
+        except Exception as e:
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            logging.critical("RETHarvester could not connect to Twitter at {}, please restart...".format(current_time))
+            logging.critical(str(e))
             exit(0)
         return tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss
 
@@ -155,8 +158,11 @@ class GEOHarvester(TwitterHarvester):
                     tweet_ss.append(ss)
                 
             max_id = str(int(tid[-1])-1)
-        except:
-            logging.critical("Could not connect to Twitter, please restart...")
+        except Exception as e:
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            logging.critical("GEOHarvester could not connect to Twitter at {}, please restart...".format(current_time))
+            logging.critical(str(e))
             exit(0)
 
         return max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
@@ -184,7 +190,6 @@ def collect_property_opinion(city, RET, cdbUrl, db, n):
     queries = ['house price {}'.format(city)]
     # 'buy house {}'.format(city) , 'house market {}'.format(city), 
     for query in queries:
-        print(query)
         logging.info('Collecting property tweets using query: {}..'.format(query))
         tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss = RET.harvest(n, query)
         docs = RET.prepare_data(tid, created_at, tweet_text,retweet_counts, favorite_count, hashtags, tweet_ss, city, query)
@@ -244,25 +249,17 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 300, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 10, 12)
 
         #Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
-        print(city_topics)
         logging.info('Generated city topics')
         GEO.create_db(COUCHDB_URL, TOPIC_DB)
         GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
-        print('finished uploading city topics')
+        logging.info('finished uploading city topics')
 
-        try_count = 0
-        try:
-            start_streaming(c_id, city, COUCHDB_URL)
-        except:
-            if try_count < 3:
-                print("retry {}: error occured during stream, restarting streaming...".format(try_count))
-                start_streaming(c_id, city, COUCHDB_URL)
-                try_count += 1
-            return 
+        start_streaming(c_id, city, COUCHDB_URL)
+
 
 
 if __name__ == "__main__":

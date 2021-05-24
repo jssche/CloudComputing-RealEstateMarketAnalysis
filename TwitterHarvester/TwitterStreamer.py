@@ -87,11 +87,18 @@ class TwitterStreamer():
     def startStream(self):
         stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=100)
         try:
+            try_count = 0 
             logging.info('Start streaming. Streaming query: {}'.format(self.query))
-            print('start streaming...')
             stream.filter(track=self.query)
-        except KeyboardInterrupt as e :
-            logging.info("Streaming interrupted..")
+        except Exception as e :
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            logging.critical("Streamer could not connect to Twitter at {}, please restart...".format(current_time))
+            logging.critical(str(e))
+            if try_count < 3:
+                logging.info("retry {}: restarting streaming...".format(try_count))
+                stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=100)
+                try_count += 1
         finally:
             logging.info('Done.')
             stream.disconnect()
