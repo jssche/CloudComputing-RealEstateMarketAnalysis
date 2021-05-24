@@ -4,7 +4,7 @@ const io = require('socket.io')(http, {cors: {origin:'*'}})
 const NodeCouchDb = require('node-couchdb')
 
 const couch = new NodeCouchDb({
-    host: '172.26.131.215',
+    host: 'couchdbnode',
     protocol: 'http',
     port: 5984,
     auth: {
