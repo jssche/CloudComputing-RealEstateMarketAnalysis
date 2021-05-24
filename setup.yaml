@@ -10,6 +10,7 @@
    #  - role: git
 #    - role: mount-volumes
 #    - role: docker
+    - role: docker_swarm
 #    - role: couchdb
     - role: uploader
     - role: frontmap

@@ -1,4 +1,4 @@
-- name: store master ip address for later clustering
+- name: store master ip address for later use
   set_fact:
     master_instance: "{{ groups['instance_1'][0] }}"
 
