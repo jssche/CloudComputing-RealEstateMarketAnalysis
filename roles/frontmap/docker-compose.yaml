@@ -4,7 +4,7 @@ services:
   frontmap:
 #    depends_on:
 #      - couchdbnode
-    image: liam1018/frontmap
+    image: liam1018/newmap
     ports: 
       - "3000:3000"
 #  twitterharvester:
