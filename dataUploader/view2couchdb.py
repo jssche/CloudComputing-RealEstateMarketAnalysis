@@ -74,6 +74,15 @@ class viewGenerator:
             }
             self.designdoc="_design/homeless"
             self.generateView()
+        elif dataDB == "twitter-property":
+            self.allviews={
+                "twitterProperty":{
+                    "map": "function (doc) {\n  emit([doc.city,doc.created_at],{text:doc.text,retweet_count:doc.reweet_count,favorite_count:doc.favorite_count});\n}"
+                }
+            }
+            self.designdoc="_design/homeless"
+            self.generateView()
+ 
 
     def generateView(self):
         try:
