@@ -29,7 +29,12 @@ class TwitterHarvester():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/', retry_count=100, retry_delay=60)
+        proxy = dict(http ='http://wwwproxy.unimelb.edu.au:8000/',
+                     https ='http://wwwproxy.unimelb.edu.au:8000/',
+                     HTTP = 'http://wwwproxy.unimelb.edu.au:8000/',
+                     HTTPS = 'http://wwwproxy.unimelb.edu.au:8000/')
+
+        self.api = tweepy.API(auth, proxy=proxy, retry_count=100, retry_delay=60)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):
@@ -201,7 +206,7 @@ def collect_city_opinion(city, city_coor, GEO, cdbUrl, db, batch, n):
     max_id = None
     count = 0
     while count < batch:
-        if count % 50 == 0:
+        if count % 5 == 0:
             logging.info('Collecting {} city tweets, batch {}'.format(city, count))
         max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss) = GEO.harvest(city_coor, max_id, n)
         docs = GEO.prepare_data(tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss, city)
@@ -253,10 +258,14 @@ def main():
 
         #Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
-        logging.info('Generated city topics')
+        t = time.localtime()
+        current_time = time.strftime("%H:%M:%S", t)
+        logging.info('Generated city topics at {}'.format(current_time))
         GEO.create_db(COUCHDB_URL, TOPIC_DB)
         GEO.upload(COUCHDB_URL, TOPIC_DB, city_topics)
-        logging.info('finished uploading city topics')
+        t = time.localtime()
+        current_time = time.strftime("%H:%M:%S", t)
+        logging.info('Uploaded city topics at {}'.format(current_time))
 
         start_streaming(c_id, city, COUCHDB_URL)
 

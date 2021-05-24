@@ -79,7 +79,12 @@ class TwitterStreamer():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy='http://wwwproxy.unimelb.edu.au:8000/')
+        proxy = dict(http ='http://wwwproxy.unimelb.edu.au:8000/',
+                     https ='http://wwwproxy.unimelb.edu.au:8000/',
+                     HTTP = 'http://wwwproxy.unimelb.edu.au:8000/',
+                     HTTPS = 'http://wwwproxy.unimelb.edu.au:8000/')
+
+        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy=proxy)
         self.analyzer = SentimentIntensityAnalyzer()
         self.listener = RETListener(city, query, url)
         self.query = query
@@ -88,7 +93,9 @@ class TwitterStreamer():
         stream = tweepy.Stream(auth=self.api.auth, listener=self.listener, max_retries=100)
         try:
             try_count = 0 
-            logging.info('Start streaming. Streaming query: {}'.format(self.query))
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            logging.info('Start streaming at {}. Streaming query: {}'.format(current_time, self.query))
             stream.filter(track=self.query)
         except Exception as e :
             t = time.localtime()
