@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  datauploader:
+#    depends_on:
+#      - couchdbnode
+    image: liam1018/data525.3
+#  twitterharvester:
+#    image: liam1018/twitterharvester2
+
+    
+networks:
+  default:
+    external: true
+    name: ccc_docker_network

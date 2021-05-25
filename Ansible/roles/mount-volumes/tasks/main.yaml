@@ -1,0 +1,41 @@
+#- name: Formatting
+#  become: yes
+#  shell: "mkfs.ext4 /dev/vdb"
+
+- name: initialse the file folder
+  become: yes
+  filesystem:
+    fstype: xfs
+    dev: "{{ item.device }}"
+  when: item.device is defined
+  with_items:
+    - "{{ volumes }}"
+
+- name: store information
+  become: yes
+  stat:
+    path: "{{ item.mountpoint }}"
+  register: stored_information
+  with_items:
+    - "{{ volumes }}"
+
+- name: create the folder
+  become: yes
+  file:
+    path: "{{ item.item.mountpoint }}"
+    recurse: yes
+    state: directory
+  when: item.stat.exists == false
+  with_items:
+    - "{{ stored_information.results }}"
+
+- name: mount volumes
+  become: yes
+  mount:
+    path: "{{ item.mountpoint }}"
+    src: "{{ item.device }}"
+    fstype: xfs
+    state: mounted
+  when: item.device is defined
+  with_items:
+    - "{{ volumes }}"
