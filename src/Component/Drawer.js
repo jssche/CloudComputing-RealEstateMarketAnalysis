@@ -55,10 +55,8 @@ export default function SideDrawer(props) {
   ];
 
   const dates =[
-    "2018",
     "2019",
     "2020",
-    "2021"
   ];
 
   const propertyType =[

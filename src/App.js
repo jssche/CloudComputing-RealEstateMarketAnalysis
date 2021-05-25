@@ -6,7 +6,6 @@ import ToolBar from "./Component/NavBar/Toolbar"
 // import Leaflet from './Pages/Leaflet';
 // import Test from './Pages/test';
 import MapPage from './Pages/MapPage';
-import  {AxiosAPI}  from './Component/AxiosAPI';
 
 function App() {
   return (

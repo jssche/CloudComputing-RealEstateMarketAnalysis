@@ -8,6 +8,7 @@ import HomePage from "./HomePage";
 
 
 
+
  
 class MapPage extends Component {  
     constructor(props) {
@@ -19,9 +20,13 @@ class MapPage extends Component {
             shapeFile: null,
             date: "2019",
             propertyType: "House",
-            display: "home"
+            display: "home",
+            population: null,
+            ip: window.location.host.split(":")[0],
+            // ip: "172.26.132.96"
         };
-        this.getFile("mel");
+        this.getFile(this.state.position);
+        this.getPopulation(this.state.position);
     }  
 
     convertToLocation(position){
@@ -41,6 +46,7 @@ class MapPage extends Component {
     setPosition(position){
         this.setState({position: position});
         this.getFile(position);
+        this.getPopulation(position);
     }
 
     setDate(date){
@@ -52,9 +58,7 @@ class MapPage extends Component {
     }
 
     getFile(position){
-        // let ip = window.location.host;
-        // ip = ip.split(":")[0];
-        var url = "http://admin:admin@172.26.133.91:5984/aurin-geo/" + position;
+        var url = "http://admin:admin@"+this.state.ip+":5984/aurin-geo/" + position;
         // console.log('http://admin:admin@172.26.131.149:5984/aurin-geo/' + position);
         // var url = 'http://admin:admin@172.26.131.149:5984/aurin-geo/mel';
         axios.get(url, {headers: {'Authorization': 'Basic YWRtaW46YWRtaW4='}})
@@ -67,6 +71,21 @@ class MapPage extends Component {
 
 
 
+
+    getPopulation(position){
+        const startkey= "key=%5B2019%2C%22"+position+"%22%5D&";
+        const endkey = "endkey=%5B2019%2C%22"+position+"%22%2C%7B%7D%5D";
+        const url="http://admin:admin@"+this.state.ip+":5984/aurin-population/_design/population/_view/population?group_level=2&"+startkey+endkey;
+        axios.get(url, {headers: {'Authorization': 'Basic YWRtaW46YWRtaW4='}})
+        .then(
+            response => {
+              this.setState({population: response.data.rows[0].value});
+            }
+        );
+      }
+
+
+
     render() { 
         const attributes ={
             position: this.state.position,
@@ -74,6 +93,8 @@ class MapPage extends Component {
             standard: this.state.standard,
             date: this.state.date,
             propertyType: this.state.propertyType,
+            population : this.state.population,
+            ip: this.state.ip,
         }
         const functions ={
             setStandard: (name) =>this.setStandard(name),
@@ -88,13 +109,12 @@ class MapPage extends Component {
                 <Grid item xs={12}>
                     <ToolBar attributes={attributes} functions={functions}/>
                 </Grid>
-                <Grid container item  xs={12}>
-                    {this.state.display == "map"?
-                    <Leaflet attributes={attributes} setStandard={(name) =>this.setStandard(name)} onChange={this.stateChange}/>
-                    :this.state.display == "scenario"?
-                    <Scenario attributes={attributes}/>
-                    :<HomePage />}
-                </Grid>
+                {this.state.display == "map"?
+                <Leaflet attributes={attributes} setStandard={(name) =>this.setStandard(name)} onChange={this.stateChange}/>
+                :this.state.display == "scenario"?
+                <Scenario attributes={attributes}/>
+                :<HomePage />}
+                
             </Grid>
         );
     }

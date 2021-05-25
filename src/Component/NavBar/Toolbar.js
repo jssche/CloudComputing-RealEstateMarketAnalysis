@@ -24,15 +24,6 @@ export default function NavToolbar(props) {
   // const {changeStandard} = props;
   const classes = useStyles();
 
-
-  // const clickedScenario = () => {
-  //   console.log("scenario clicked");
-  //   props.functions.setDisplay("scenario");
-  // };
-  // const clickedMap = () => {
-  //   // props.setPosition([-37.805, 145.00]);
-  //   props.functions.setDisplay("map");
-  // };
   const clickedHome = () => {
     console.log("home clicked");
     props.functions.setDisplay("home");
@@ -44,7 +35,7 @@ export default function NavToolbar(props) {
         <Toolbar>
           <FilterDrawer attributes={props.attributes} functions={props.functions}/>
           <Typography variant="h6" className={classes.title}>
-            Real estate Analyze
+            Real Estate Analyzer
           </Typography>
           <ScenarioMenu functions={props.functions}/>
           <MapMenu functions={props.functions}/>

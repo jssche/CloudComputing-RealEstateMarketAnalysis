@@ -11,6 +11,17 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
     },
+    dataTitle: {
+      fontFamily: "PT Sans",
+      fontStyle: "normal",
+      fontWeight: "bold",
+      fontSize: "20px",
+      marginLeft: "3.5em",
+      marginBottom: "1em"
+    },
+    pie: {
+      padding: "5em"
+    },
     navbarButton: {
         fontSize: "16px",
         fontSize:"bold",
