@@ -5,12 +5,11 @@
   gather_facts: true
 
   roles:
-#    - role: proxy
-#    - role: environment
-   #  - role: git
-#    - role: mount-volumes
-#    - role: docker
-#    - role: docker_swarm
-#    - role: couchdb
+    - role: proxy
+    - role: environment
+    - role: mount-volumes
+    - role: docker
+    - role: docker_swarm
+    - role: couchdb
     - role: uploader
     - role: frontmap
