@@ -28,6 +28,7 @@ volumes:
     device: /dev/vdb
     mountpoint: couchdb
 
+################## Security group ##################
 security_groups:
   - name: grp_33_ssh
     description: "Security group for SSH access"
