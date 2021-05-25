@@ -21,8 +21,8 @@
   become: yes
   docker_swarm_service:
     name: frontmap
-    image: liam1018/newmap
-    replicas: 4
+    image: liam1018/map525.1
+    replicas: 3
     publish:
       - published_port: 3000
         target_port: 3000

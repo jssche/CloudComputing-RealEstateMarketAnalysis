@@ -23,10 +23,10 @@ volumes:
     vol_size: 50
     device: /dev/vdb
     mountpoint: couchdb
-  - vol_name: volume4
-    vol_size: 50
-    device: /dev/vdb
-    mountpoint: couchdb
+#  - vol_name: volume4
+#    vol_size: 50
+#    device: /dev/vdb
+#    mountpoint: couchdb
 
 ################## Security group ##################
 # For each instance, define the TCP rule.
@@ -125,18 +125,13 @@ security_groups:
 ################## Instance ##################
 instances:
   - name: instance_1
-#    security_groups: instance1-security-group
-
     volumes: ['volume1']
   - name: instance_2
-#    security_groups: instance2-security-group
     volumes: ['volume2']
   - name: instance_3
-#    security_groups: instance3-security-group
     volumes: ['volume3']
-  - name: instance_4
-#    security_groups: instance4-security-group
-    volumes: ['volume4']
+#  - name: instance_4
+#    volumes: ['volume4']
 
 
 ################## Setup ##################
