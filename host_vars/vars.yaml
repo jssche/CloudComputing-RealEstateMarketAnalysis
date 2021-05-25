@@ -104,6 +104,12 @@ security_groups:
     port_range_min: 443
     port_range_max: 443
     remote_ip_prefix: 0.0.0.0/0
+  - name: grp_33_swarm
+    description: "Security group for docker swarm"
+    protocol: tcp
+    port_range_min: 2377
+    port_range_max: 2377
+    remote_ip_prefix: 0.0.0.0/0
 
 ################## Instance ##################
 instances:
