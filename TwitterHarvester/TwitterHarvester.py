@@ -29,12 +29,7 @@ class TwitterHarvester():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        proxy = dict(http ='http://wwwproxy.unimelb.edu.au:8000/',
-                     https ='http://wwwproxy.unimelb.edu.au:8000/',
-                     HTTP = 'http://wwwproxy.unimelb.edu.au:8000/',
-                     HTTPS = 'http://wwwproxy.unimelb.edu.au:8000/')
-
-        self.api = tweepy.API(auth, proxy=proxy, retry_count=100, retry_delay=60)
+        self.api = tweepy.API(auth, proxy='http://wwwproxy.unimelb.edu.au:8000/', retry_count=100, retry_delay=60)
         self.analyzer = SentimentIntensityAnalyzer()
 
     def create_db(self, ip, name):

@@ -109,3 +109,29 @@ INFO:root:Start streaming. Streaming query: ['house price brisbane']
 INFO:root:Start streaming. Streaming query: ['house price sydney']
 INFO:root:Start streaming. Streaming query: ['house price sydney']
 INFO:root:Start streaming. Streaming query: ['house price sydney']
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:45:32, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:45:32, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:46:15, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:46:15, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:48:20, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:48:20, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:48:44, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:48:44, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:Collecting sydney city tweets, batch 0

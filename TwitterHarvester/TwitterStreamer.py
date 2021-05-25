@@ -79,12 +79,7 @@ class TwitterStreamer():
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, token_secret)
 
-        proxy = dict(http ='http://wwwproxy.unimelb.edu.au:8000/',
-                     https ='http://wwwproxy.unimelb.edu.au:8000/',
-                     HTTP = 'http://wwwproxy.unimelb.edu.au:8000/',
-                     HTTPS = 'http://wwwproxy.unimelb.edu.au:8000/')
-
-        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy=proxy)
+        self.api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, proxy='http://wwwproxy.unimelb.edu.au:8000/')
         self.analyzer = SentimentIntensityAnalyzer()
         self.listener = RETListener(city, query, url)
         self.query = query
