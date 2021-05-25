@@ -72,7 +72,7 @@ def prepare_data(raw_data, cols, new_cols, year=None, city=None):
 
 def main():
     cities = ['mel','syd','bne']
-    db_names = ['aurin-geo', 'aurin-property', 'aurin-population', 'aurin-building', 'aurin-homeless']
+    db_names = ['aurin-geo', 'aurin-property', 'aurin-population', 'aurin-building', 'aurin-homeless', 'twitter-property']
     dir_dict = {
         'aurin-geo': ['./AURIN_data/Geometry/mel/ed02f7e0-8037-42e5-a3da-34f1795fd8c5.shp', 
                     './AURIN_data/Geometry/syd/27c1d1eb-4661-4928-8ec0-7151bca62078.shp',
