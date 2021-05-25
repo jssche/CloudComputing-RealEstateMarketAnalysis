@@ -33,13 +33,13 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-- name: upload Aurin data by docker_compose
-  become: yes
-  docker_compose:
-    project_src: "{{ couch_dir }}"
-    pull: yes
-    state: present
-  when: ansible_host == master_instance
+#- name: upload Aurin data by docker_compose
+#  become: yes
+#  docker_compose:
+#    project_src: "{{ couch_dir }}"
+#    pull: yes
+#    state: present
+#  when: ansible_host == master_instance
 
 ##- name: upload Aurin data by docker_container
 #  become: yes

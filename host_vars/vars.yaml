@@ -23,38 +23,11 @@ volumes:
     vol_size: 50
     device: /dev/vdb
     mountpoint: couchdb
-#  - vol_name: volume4
-#    vol_size: 50
-#    device: /dev/vdb
-#    mountpoint: couchdb
+  - vol_name: volume4
+    vol_size: 50
+    device: /dev/vdb
+    mountpoint: couchdb
 
-################## Security group ##################
-# For each instance, define the TCP rule.
-#security_groups:
-#  - name: instance1-security-group
-#    description: "security group for instance1"
-#    protocol: tcp
-#    port_range_min: 1
-#    port_range_max: 65535
-#    remote_ip_prefix: 0.0.0.0/0
-#  - name: instance2-security-group
-#    description: "security group for instance2"
-#    protocol: tcp
-#    port_range_min: 1
-#    port_range_max: 65535
-#    remote_ip_prefix: 0.0.0.0/0
-#  - name: instance3-security-group
-#    description: "security group for instance3"
-#    protocol: tcp
-#    port_range_min: 1
-#    port_range_max: 65535
-#    remote_ip_prefix: 0.0.0.0/0
-#  - name: instance4-security-group
-#    description: "security group for instance4"
-#    protocol: tcp
-#    port_range_min: 1
-#    port_range_max: 65535
-#    remote_ip_prefix: 0.0.0.0/0
 security_groups:
   - name: grp_33_ssh
     description: "Security group for SSH access"
@@ -130,8 +103,8 @@ instances:
     volumes: ['volume2']
   - name: instance_3
     volumes: ['volume3']
-#  - name: instance_4
-#    volumes: ['volume4']
+  - name: instance_4
+    volumes: ['volume4']
 
 
 ################## Setup ##################
