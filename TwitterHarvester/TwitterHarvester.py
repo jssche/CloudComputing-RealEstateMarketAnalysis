@@ -165,7 +165,7 @@ class GEOHarvester(TwitterHarvester):
         except Exception as e:
             t = time.localtime()
             current_time = time.strftime("%H:%M:%S", t)
-            logging.critical("GEOHarvester could not connect to Twitter at {}, please restart...".format(current_time))
+            logging.critical("GEOHarvester could not connect to Twitter at {}, please restart using max_id {}".format(current_time, max_id))
             logging.critical(str(e))
 
         return max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
@@ -252,10 +252,10 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 10, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 300, 12)
 
         #Find the topics of each city and upload to db
-        city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
+        city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(1,20))
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
         logging.info('Generated city topics at {}'.format(current_time))

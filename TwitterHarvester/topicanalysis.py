@@ -47,8 +47,8 @@ class TwCitytopicAnalyzer:
         data_mel=[]
         data_syd=[]
         data_bne=[]
-        sort_bytime = sorted(data, key=lambda x: time.mktime(time.strptime(x['created_at'], '%a %b %d %H:%M:%S +0000  %Y')))
-        for each in sort_bytime:
+        # sort_bytime = sorted(data, key=lambda x: time.mktime(time.strptime(x['created_at'], '%a %b %d %H:%M:%S +0000  %Y')))
+        for each in data:
             if self.city == "melbourne" and each['city'] == "melbourne":
                 data_mel.append(each)
             elif self.city == "brisbane" and each['city'] == 'brisbane':
