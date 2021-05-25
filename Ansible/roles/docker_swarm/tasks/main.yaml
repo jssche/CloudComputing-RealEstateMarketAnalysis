@@ -1,0 +1,23 @@
+- name: store master ip address for later use
+  set_fact:
+    master_instance: "{{ groups['instance_1'][0] }}"
+
+- name: create swarm manager
+  become: yes
+  docker_swarm:
+    state: present
+    advertise_addr: "{{ master_instance }}:2377"
+  run_once: yes
+  when: ansible_host == master_instance
+  register: sresults
+
+- name: add others
+  become: yes
+  docker_swarm:
+    state: join
+    advertise_addr: "{{ ansible_host }}"
+    join_token: "{{ sresults.swarm_facts.JoinTokens.Worker }}"
+    remote_addrs: "{{ master_instance }}:2377"
+  register: result
+#  loop: "{{ groups['slaves'] }}"
+  when: ansible_host != master_instance

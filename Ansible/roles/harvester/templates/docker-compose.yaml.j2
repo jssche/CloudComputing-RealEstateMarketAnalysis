@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+#  datauploader:
+#    depends_on:
+#      - couchdbnode
+#    image: liam1018/datauploader3
+
+{% for item in group_names %}
+{%   if item is search("instance") %}
+  twitterHarvester:
+    environment:
+      - env_val={{item}}
+    image: liam1018/harv526.1
+{%   endif %}
+{% endfor %}
+    
+networks:
+  default:
+    external: true
+    name: ccc_docker_network
