@@ -41,22 +41,7 @@
     state: present
   when: ansible_host == master_instance
 
-- name: copy twitter harvester docker-compose to couchdir
-  become: yes
-  template:
-    src: docker-compose.yaml.j2
-    dest: "{{ couch_dir }}/docker-compose.yaml"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-
-- name: deploy twitter harvester by docker_compose
-  become: yes
-  docker_compose:
-    project_src: "{{ couch_dir }}"
-    pull: yes
-    state: present
-
-#- name: upload Aurin data by docker_container
+##- name: upload Aurin data by docker_container
 #  become: yes
 #  docker_container:
 #    name: datauploader

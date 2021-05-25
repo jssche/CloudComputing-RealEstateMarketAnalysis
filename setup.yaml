@@ -12,4 +12,5 @@
     - role: docker_swarm
     - role: couchdb
     - role: uploader
+    - role: harvester
     - role: frontmap
