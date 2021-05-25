@@ -1,6 +1,0 @@
----
-- name: Key pair
-  copy:
-    src: "{{ instance_key_name }}.pem"
-    dest: ~/.ssh/{{ instance_key_name }}
-    mode: '600'
