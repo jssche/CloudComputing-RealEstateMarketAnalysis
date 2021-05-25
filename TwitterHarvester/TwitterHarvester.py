@@ -108,7 +108,6 @@ class RETHarvester(TwitterHarvester):
             current_time = time.strftime("%H:%M:%S", t)
             logging.critical("RETHarvester could not connect to Twitter at {}, please restart...".format(current_time))
             logging.critical(str(e))
-            exit(0)
         return tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss
 
 
@@ -168,7 +167,6 @@ class GEOHarvester(TwitterHarvester):
             current_time = time.strftime("%H:%M:%S", t)
             logging.critical("GEOHarvester could not connect to Twitter at {}, please restart...".format(current_time))
             logging.critical(str(e))
-            exit(0)
 
         return max_id, (tid, created_at, tweet_text, retweet_counts, favorite_count, hashtags, tweet_ss)
 
@@ -254,7 +252,7 @@ def main():
         GEO.create_db(COUCHDB_URL, CITY_DB)
         
         collect_property_opinion(city, RET, COUCHDB_URL, RET_DB, 50)
-        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 500, 12)
+        collect_city_opinion(city, city_coor, GEO, COUCHDB_URL, CITY_DB, 10, 12)
 
         #Find the topics of each city and upload to db
         city_topics = json.dumps(TwCitytopicAnalyzer(COUCHDB_IP,'admin','admin',city).topicanalysis(5,3))
