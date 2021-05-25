@@ -1,0 +1,137 @@
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:[{"id":"1396053490724704260","error":"conflict","reason":"Document update conflict."},{"id":"1395982436144619526","error":"conflict","reason":"Document update conflict."},{"id":"1395900254256390145","error":"conflict","reason":"Document update conflict."},{"id":"1395700190506491912","error":"conflict","reason":"Document update conflict."},{"id":"1395649133914980355","error":"conflict","reason":"Document update conflict."},{"id":"1395572879471775747","error":"conflict","reason":"Document update conflict."},{"id":"1395496958995795973","error":"conflict","reason":"Document update conflict."},{"id":"1395003383212167169","error":"conflict","reason":"Document update conflict."},{"id":"1394813424329060354","error":"conflict","reason":"Document update conflict."},{"id":"1394577263568457728","error":"conflict","reason":"Document update conflict."},{"id":"1394533989646442500","error":"conflict","reason":"Document update conflict."},{"id":"1394533306411061253","error":"conflict","reason":"Document update conflict."},{"id":"1394480443672600578","error":"conflict","reason":"Document update conflict."},{"id":"1394464835966885890","error":"conflict","reason":"Document update conflict."},{"id":"1394462490591780864","error":"conflict","reason":"Document update conflict."},{"id":"1394458061004177411","error":"conflict","reason":"Document update conflict."},{"id":"1394427214251270144","error":"conflict","reason":"Document update conflict."},{"id":"1394420400726036481","error":"conflict","reason":"Document update conflict."},{"id":"1394403159506829315","error":"conflict","reason":"Document update conflict."},{"id":"1394395926890876931","error":"conflict","reason":"Document update conflict."},{"id":"1394354470809739267","error":"conflict","reason":"Document update conflict."},{"id":"1394344479541415939","error":"conflict","reason":"Document update conflict."}]
+
+INFO:root:Collecting sydney city tweets, batch 0
+INFO:root:[{"ok":true,"id":"1396271639256453125","rev":"1-0a73b73629dcdfd96ae7df74030f80a0"},{"ok":true,"id":"1396271639097012224","rev":"1-a8ab633201b4100e2db5c0105a87df9f"},{"ok":true,"id":"1396271637834526723","rev":"1-8794c28a1f24f7b9dc64c7e8ddadf324"},{"ok":true,"id":"1396271633237614593","rev":"1-390ed00b72233afc0cef8ab136352756"},{"ok":true,"id":"1396271622705717249","rev":"1-addbcb65172aebbfa4407565308ce6be"},{"ok":true,"id":"1396271610831597575","rev":"1-f2999bfc2e67b6e8f7ce38889e61bcd8"},{"ok":true,"id":"1396271608218542086","rev":"1-09557022d7e4262e5361255000f18579"}]
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:[{"id":"1396053490724704260","error":"conflict","reason":"Document update conflict."},{"id":"1395982436144619526","error":"conflict","reason":"Document update conflict."},{"id":"1395900254256390145","error":"conflict","reason":"Document update conflict."},{"id":"1395700190506491912","error":"conflict","reason":"Document update conflict."},{"id":"1395649133914980355","error":"conflict","reason":"Document update conflict."},{"id":"1395572879471775747","error":"conflict","reason":"Document update conflict."},{"id":"1395496958995795973","error":"conflict","reason":"Document update conflict."},{"id":"1395003383212167169","error":"conflict","reason":"Document update conflict."},{"id":"1394813424329060354","error":"conflict","reason":"Document update conflict."},{"id":"1394577263568457728","error":"conflict","reason":"Document update conflict."},{"id":"1394533989646442500","error":"conflict","reason":"Document update conflict."},{"id":"1394533306411061253","error":"conflict","reason":"Document update conflict."},{"id":"1394480443672600578","error":"conflict","reason":"Document update conflict."},{"id":"1394464835966885890","error":"conflict","reason":"Document update conflict."},{"id":"1394462490591780864","error":"conflict","reason":"Document update conflict."},{"id":"1394458061004177411","error":"conflict","reason":"Document update conflict."},{"id":"1394427214251270144","error":"conflict","reason":"Document update conflict."},{"id":"1394420400726036481","error":"conflict","reason":"Document update conflict."},{"id":"1394403159506829315","error":"conflict","reason":"Document update conflict."},{"id":"1394395926890876931","error":"conflict","reason":"Document update conflict."},{"id":"1394354470809739267","error":"conflict","reason":"Document update conflict."},{"id":"1394344479541415939","error":"conflict","reason":"Document update conflict."}]
+
+INFO:root:Collecting sydney city tweets, batch 0
+INFO:root:[{"ok":true,"id":"1396271750162255873","rev":"1-0ca984b8bbe55a8c1e5b7e78bc8588d3"},{"ok":true,"id":"1396271748832657408","rev":"1-3b0a18fcd94a9dfeda814298f04732a0"},{"ok":true,"id":"1396271737361244166","rev":"1-7ec8e932210cca3185bdbd1ef75556f7"},{"ok":true,"id":"1396271719631843328","rev":"1-aebf0adba8aa23ac8988c9e9c18416dd"},{"ok":true,"id":"1396271715798241283","rev":"1-ae3343d30159512190536766f1fd7bac"},{"ok":true,"id":"1396271697393639426","rev":"1-6692e01d95721a3f48360aaab3fac86b"},{"ok":true,"id":"1396271696630386690","rev":"1-bcd76fcda260666f8db87f9dde366a67"}]
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:[{"id":"1396053490724704260","error":"conflict","reason":"Document update conflict."},{"id":"1395982436144619526","error":"conflict","reason":"Document update conflict."},{"id":"1395900254256390145","error":"conflict","reason":"Document update conflict."},{"id":"1395700190506491912","error":"conflict","reason":"Document update conflict."},{"id":"1395649133914980355","error":"conflict","reason":"Document update conflict."},{"id":"1395572879471775747","error":"conflict","reason":"Document update conflict."},{"id":"1395496958995795973","error":"conflict","reason":"Document update conflict."},{"id":"1395003383212167169","error":"conflict","reason":"Document update conflict."},{"id":"1394813424329060354","error":"conflict","reason":"Document update conflict."},{"id":"1394577263568457728","error":"conflict","reason":"Document update conflict."},{"id":"1394533989646442500","error":"conflict","reason":"Document update conflict."},{"id":"1394533306411061253","error":"conflict","reason":"Document update conflict."},{"id":"1394480443672600578","error":"conflict","reason":"Document update conflict."},{"id":"1394464835966885890","error":"conflict","reason":"Document update conflict."},{"id":"1394462490591780864","error":"conflict","reason":"Document update conflict."},{"id":"1394458061004177411","error":"conflict","reason":"Document update conflict."},{"id":"1394427214251270144","error":"conflict","reason":"Document update conflict."},{"id":"1394420400726036481","error":"conflict","reason":"Document update conflict."},{"id":"1394403159506829315","error":"conflict","reason":"Document update conflict."},{"id":"1394395926890876931","error":"conflict","reason":"Document update conflict."},{"id":"1394354470809739267","error":"conflict","reason":"Document update conflict."},{"id":"1394344479541415939","error":"conflict","reason":"Document update conflict."}]
+
+INFO:root:Collecting sydney city tweets, batch 0
+INFO:root:[{"ok":true,"id":"1396271850477408260","rev":"1-c1f38848e0b262e04feae2b65990288a"},{"ok":true,"id":"1396271848040587267","rev":"1-1aab12640698190e163a7338ded2175a"},{"ok":true,"id":"1396271839354052609","rev":"1-1748f22f5addf320e493cd78a3ee1470"},{"ok":true,"id":"1396271838611705859","rev":"1-0a3edc5df42f685e31265c29eeb8dee6"},{"ok":true,"id":"1396271835801702401","rev":"1-a6d0660edcd3ab59ff3a9c3a087d685c"},{"ok":true,"id":"1396271834820136960","rev":"1-12e9a6601f229e09b49e9287c58d8b17"}]
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:[{"id":"1396053490724704260","error":"conflict","reason":"Document update conflict."},{"id":"1395982436144619526","error":"conflict","reason":"Document update conflict."},{"id":"1395900254256390145","error":"conflict","reason":"Document update conflict."},{"id":"1395700190506491912","error":"conflict","reason":"Document update conflict."},{"id":"1395649133914980355","error":"conflict","reason":"Document update conflict."},{"id":"1395572879471775747","error":"conflict","reason":"Document update conflict."},{"id":"1395496958995795973","error":"conflict","reason":"Document update conflict."},{"id":"1395003383212167169","error":"conflict","reason":"Document update conflict."},{"id":"1394813424329060354","error":"conflict","reason":"Document update conflict."},{"id":"1394577263568457728","error":"conflict","reason":"Document update conflict."},{"id":"1394533989646442500","error":"conflict","reason":"Document update conflict."},{"id":"1394533306411061253","error":"conflict","reason":"Document update conflict."},{"id":"1394480443672600578","error":"conflict","reason":"Document update conflict."},{"id":"1394464835966885890","error":"conflict","reason":"Document update conflict."},{"id":"1394462490591780864","error":"conflict","reason":"Document update conflict."},{"id":"1394458061004177411","error":"conflict","reason":"Document update conflict."},{"id":"1394427214251270144","error":"conflict","reason":"Document update conflict."},{"id":"1394420400726036481","error":"conflict","reason":"Document update conflict."},{"id":"1394403159506829315","error":"conflict","reason":"Document update conflict."},{"id":"1394395926890876931","error":"conflict","reason":"Document update conflict."},{"id":"1394354470809739267","error":"conflict","reason":"Document update conflict."},{"id":"1394344479541415939","error":"conflict","reason":"Document update conflict."}]
+
+INFO:root:Collecting sydney city tweets, batch 0
+INFO:root:[{"ok":true,"id":"1396272018799042565","rev":"1-e2cab56c720432d05906d154053aa90c"},{"ok":true,"id":"1396272013107339265","rev":"1-8a23ebeb2666908a389e2fdda11afa06"},{"ok":true,"id":"1396272011484139525","rev":"1-6edd18ec44e88754858839b4e1fda370"},{"ok":true,"id":"1396272008845881348","rev":"1-56911e006608fb3814e47c34a335ca2f"}]
+
+INFO:gensim.corpora.dictionary:adding document #0 to Dictionary(0 unique tokens: [])
+INFO:gensim.corpora.dictionary:built Dictionary(3 unique tokens: ['ah', 'good', 'time']) from 1 documents (total 3 corpus positions)
+INFO:gensim.utils:Dictionary lifecycle event {'msg': "built Dictionary(3 unique tokens: ['ah', 'good', 'time']) from 1 documents (total 3 corpus positions)", 'datetime': '2021-05-23T11:09:37.313458', 'gensim': '4.0.1', 'python': '3.8.5 (default, Sep  4 2020, 07:30:14) \n[GCC 7.3.0]', 'platform': 'Linux-5.4.0-73-generic-x86_64-with-glibc2.10', 'event': 'created'}
+INFO:gensim.models.ldamodel:using symmetric alpha at 0.2
+INFO:gensim.models.ldamodel:using symmetric eta at 0.2
+INFO:gensim.models.ldamodel:using serial LDA version on this node
+INFO:gensim.models.ldamodel:running online (single-pass) LDA training, 5 topics, 1 passes over the supplied corpus of 1 documents, updating model once every 1 documents, evaluating perplexity every 1 documents, iterating 50x with a convergence threshold of 0.001000
+WARNING:gensim.models.ldamodel:too few updates, training might not converge; consider increasing the number of passes or iterations to improve accuracy
+INFO:gensim.models.ldamodel:-4.628 per-word bound, 24.7 perplexity estimate based on a held-out corpus of 1 documents with 3 words
+INFO:gensim.models.ldamodel:PROGRESS: pass 0, at document #1/1
+INFO:gensim.models.ldamodel:topic #0 (0.200): 0.334*"ah" + 0.333*"good" + 0.333*"time"
+INFO:gensim.models.ldamodel:topic #1 (0.200): 0.333*"time" + 0.333*"good" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #2 (0.200): 0.334*"good" + 0.333*"time" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #3 (0.200): 0.335*"time" + 0.333*"good" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #4 (0.200): 0.334*"good" + 0.333*"time" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic diff=1.828167, rho=1.000000
+INFO:gensim.utils:LdaModel lifecycle event {'msg': 'trained LdaModel(num_terms=3, num_topics=5, decay=0.5, chunksize=2000) in 0.01s', 'datetime': '2021-05-23T11:09:37.330224', 'gensim': '4.0.1', 'python': '3.8.5 (default, Sep  4 2020, 07:30:14) \n[GCC 7.3.0]', 'platform': 'Linux-5.4.0-73-generic-x86_64-with-glibc2.10', 'event': 'created'}
+INFO:gensim.models.ldamodel:topic #0 (0.200): 0.334*"ah" + 0.333*"good" + 0.333*"time"
+INFO:gensim.models.ldamodel:topic #1 (0.200): 0.333*"time" + 0.333*"good" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #2 (0.200): 0.334*"good" + 0.333*"time" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #3 (0.200): 0.335*"time" + 0.333*"good" + 0.333*"ah"
+INFO:gensim.models.ldamodel:topic #4 (0.200): 0.334*"good" + 0.333*"time" + 0.333*"ah"
+INFO:root:Generated city topics
+INFO:root:{"ok":true}
+
+INFO:root:{"ok":true,"id":"17c06d01e23bb710e0cfd0fb7e16b003","rev":"1-ccdfe18b937846204af2a54abfdbc58a"}
+
+INFO:root:Start streaming. Streaming query: ['house price sydney']
+INFO:root:Uploading new tweet to database.. Status: {"ok":true,"id":"1396272420273549319","rev":"1-b1e55982ee839086ebd2ce199cb7b0ef"}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:Collecting property tweets using query: house price brisbane..
+INFO:root:[{"id":"1396053490724704260","error":"conflict","reason":"Document update conflict."},{"id":"1395982436144619526","error":"conflict","reason":"Document update conflict."},{"id":"1394577263568457728","error":"conflict","reason":"Document update conflict."},{"ok":true,"id":"1393780489597587460","rev":"1-36f276d90f22b97596ef4831b9c3b07b"}]
+
+INFO:root:Collecting brisbane city tweets, batch 0
+INFO:root:[{"ok":true,"id":"1396272623466819584","rev":"1-c6cda65cfff09c6dcd87c1542f433278"},{"ok":true,"id":"1396272601723330560","rev":"1-4c1d27b0ee0f6f932e30e58ccebbd2bb"},{"ok":true,"id":"1396272588284850177","rev":"1-53f82d10c8ea4ccb467d82dcc1ddb2de"},{"ok":true,"id":"1396272556114513924","rev":"1-8af0d3ed4949d05d12cf2de941bf61de"},{"ok":true,"id":"1396272529904263171","rev":"1-0d39506ab5003fc92bf68464f3ab559c"},{"ok":true,"id":"1396272492918939648","rev":"1-bfeb7d351ebe4a38bdc47e83869c9142"},{"ok":true,"id":"1396272482022264832","rev":"1-795e8b2323b227e8a63a06047a02ee26"},{"ok":true,"id":"1396272468520628224","rev":"1-d69f045627b408e9968c169723ffa1a9"},{"ok":true,"id":"1396272444202119168","rev":"1-41e08933e26c3c62e53bbcbf2d700f3b"}]
+
+INFO:gensim.corpora.dictionary:adding document #0 to Dictionary(0 unique tokens: [])
+INFO:gensim.corpora.dictionary:built Dictionary(12 unique tokens: ['already', 'best', 'com', 'ima', 'insane']...) from 1 documents (total 12 corpus positions)
+INFO:gensim.utils:Dictionary lifecycle event {'msg': "built Dictionary(12 unique tokens: ['already', 'best', 'com', 'ima', 'insane']...) from 1 documents (total 12 corpus positions)", 'datetime': '2021-05-23T11:11:59.361941', 'gensim': '4.0.1', 'python': '3.8.5 (default, Sep  4 2020, 07:30:14) \n[GCC 7.3.0]', 'platform': 'Linux-5.4.0-73-generic-x86_64-with-glibc2.10', 'event': 'created'}
+INFO:gensim.models.ldamodel:using symmetric alpha at 0.2
+INFO:gensim.models.ldamodel:using symmetric eta at 0.2
+INFO:gensim.models.ldamodel:using serial LDA version on this node
+INFO:gensim.models.ldamodel:running online (single-pass) LDA training, 5 topics, 1 passes over the supplied corpus of 1 documents, updating model once every 1 documents, evaluating perplexity every 1 documents, iterating 50x with a convergence threshold of 0.001000
+WARNING:gensim.models.ldamodel:too few updates, training might not converge; consider increasing the number of passes or iterations to improve accuracy
+INFO:gensim.models.ldamodel:-6.403 per-word bound, 84.6 perplexity estimate based on a held-out corpus of 1 documents with 12 words
+INFO:gensim.models.ldamodel:PROGRESS: pass 0, at document #1/1
+INFO:gensim.models.ldamodel:topic #0 (0.200): 0.083*"already" + 0.083*"best" + 0.083*"insane" + 0.083*"shit" + 0.083*"though" + 0.083*"know" + 0.083*"month" + 0.083*"two" + 0.083*"com" + 0.083*"ima"
+INFO:gensim.models.ldamodel:topic #1 (0.200): 0.083*"past" + 0.083*"com" + 0.083*"though" + 0.083*"month" + 0.083*"ive" + 0.083*"best" + 0.083*"shit" + 0.083*"know" + 0.083*"two" + 0.083*"ima"
+INFO:gensim.models.ldamodel:topic #2 (0.200): 0.083*"insane" + 0.083*"ima" + 0.083*"two" + 0.083*"already" + 0.083*"shit" + 0.083*"know" + 0.083*"month" + 0.083*"ive" + 0.083*"though" + 0.083*"past"
+INFO:gensim.models.ldamodel:topic #3 (0.200): 0.083*"already" + 0.083*"insane" + 0.083*"know" + 0.083*"ima" + 0.083*"best" + 0.083*"ive" + 0.083*"two" + 0.083*"shit" + 0.083*"month" + 0.083*"though"
+INFO:gensim.models.ldamodel:topic #4 (0.200): 0.083*"already" + 0.083*"insane" + 0.083*"month" + 0.083*"though" + 0.083*"ive" + 0.083*"know" + 0.083*"two" + 0.083*"shit" + 0.083*"past" + 0.083*"ima"
+INFO:gensim.models.ldamodel:topic diff=2.411412, rho=1.000000
+INFO:gensim.utils:LdaModel lifecycle event {'msg': 'trained LdaModel(num_terms=12, num_topics=5, decay=0.5, chunksize=2000) in 0.10s', 'datetime': '2021-05-23T11:11:59.464868', 'gensim': '4.0.1', 'python': '3.8.5 (default, Sep  4 2020, 07:30:14) \n[GCC 7.3.0]', 'platform': 'Linux-5.4.0-73-generic-x86_64-with-glibc2.10', 'event': 'created'}
+INFO:gensim.models.ldamodel:topic #0 (0.200): 0.083*"already" + 0.083*"best" + 0.083*"insane"
+INFO:gensim.models.ldamodel:topic #1 (0.200): 0.083*"past" + 0.083*"com" + 0.083*"though"
+INFO:gensim.models.ldamodel:topic #2 (0.200): 0.083*"insane" + 0.083*"ima" + 0.083*"two"
+INFO:gensim.models.ldamodel:topic #3 (0.200): 0.083*"already" + 0.083*"insane" + 0.083*"know"
+INFO:gensim.models.ldamodel:topic #4 (0.200): 0.083*"already" + 0.083*"insane" + 0.083*"month"
+INFO:root:Generated city topics
+INFO:root:{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+
+INFO:root:{"ok":true,"id":"17c06d01e23bb710e0cfd0fb7e16d770","rev":"1-4e7056e3ce64c7b1c881451d667d1124"}
+
+INFO:root:Start streaming. Streaming query: ['house price brisbane']
+INFO:root:Start streaming. Streaming query: ['house price sydney']
+INFO:root:Start streaming. Streaming query: ['house price sydney']
+INFO:root:Start streaming. Streaming query: ['house price sydney']
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:45:32, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:45:32, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:46:15, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:46:15, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:48:20, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:48:20, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+CRITICAL:root:RETHarvester could not connect to Twitter at 01:48:44, please restart...
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting sydney city tweets, batch 0
+CRITICAL:root:GEOHarvester could not connect to Twitter at 01:48:44, please restart using max_id None
+CRITICAL:root:Failed to send request: Cannot mix str and non-str arguments
+INFO:root:Collecting property tweets using query: house price sydney..
+INFO:root:Collecting sydney city tweets, batch 0
